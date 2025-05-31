@@ -1,0 +1,187 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 10px;
+    background-color: #f4f7f6;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    text-align: center;
+    -webkit-tap-highlight-color: transparent; /* Évite le flash bleu sur mobile au clic */
+}
+
+#app {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 400px; /* Adapté pour mobile */
+    box-sizing: border-box;
+}
+
+.screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hidden {
+    display: none !important;
+}
+
+h1, h2, h3 {
+    color: #2c3e50;
+}
+
+h1 { font-size: 1.8em; margin-bottom: 20px; }
+h2 { font-size: 1.5em; margin-bottom: 15px; }
+h3 { font-size: 1.2em; margin-top: 15px; margin-bottom: 10px;}
+
+
+label {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #34495e;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #bdc3c7;
+    border-radius: 6px;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+.player-inputs input[type="text"] {
+    margin-bottom: 5px; /* Moins de marge pour les listes de joueurs */
+}
+
+
+button {
+    background-color: #3498db;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    margin-top: 10px;
+    transition: background-color 0.2s ease;
+    width: 80%;
+    max-width: 300px;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+button:active {
+    transform: translateY(1px); /* Petit effet au clic */
+}
+
+#addPlayerTeam1Btn, #addPlayerTeam2Btn { /* Corrigé pour correspondre à l'ID HTML */
+    background-color: #2ecc71;
+    font-size: 0.9em;
+    padding: 8px 15px;
+    width: auto; /* Ajuster la largeur automatiquement */
+}
+#addPlayerTeam1Btn:hover, #addPlayerTeam2Btn:hover { /* Corrigé */
+    background-color: #27ae60;
+}
+
+
+#timerDisplay {
+    font-size: 3em;
+    font-weight: bold;
+    color: #e74c3c;
+    margin: 20px 0;
+}
+
+#wordToGuess {
+    font-size: 2em;
+    font-weight: bold;
+    color: #2c3e50;
+    background-color: #ecf0f1;
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 8px;
+    min-height: 50px; /* Pour éviter que ça saute trop */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+    word-break: break-word;
+}
+
+#gameScreen .action-instructions {
+    font-size: 0.9em;
+    color: #555;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+#gameScreen .actions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Deux colonnes */
+    gap: 10px; /* Espace entre les boutons */
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+#gameScreen .actions-grid button {
+    width: 100%; /* Les boutons prennent toute la largeur de leur cellule de grille */
+    padding: 10px 5px; /* Ajuster le padding si besoin */
+    font-size: 0.9em; /* Un peu plus petit pour que ça rentre bien */
+    margin-top: 0; /* Annuler la marge top générale des boutons ici */
+}
+
+#guessNormalBtn { background-color: #27ae60; } /* Vert */
+#guessNormalBtn:hover { background-color: #229954; }
+
+#guess3WordsBtn { background-color: #3498db; } /* Bleu */
+#guess3WordsBtn:hover { background-color: #2980b9; }
+
+#guessMimeBtn { background-color: #9b59b6; } /* Violet */
+#guessMimeBtn:hover { background-color: #8e44ad; }
+
+#passWordBtnGame {
+    background-color: #f39c12;
+    grid-column: span 2; /* Ce bouton prend toute la largeur */
+}
+#passWordBtnGame:hover { background-color: #d35400; }
+
+
+#currentTurnScore, #turnScoreSummary, #team1ScoreDisplay, #team2ScoreDisplay, #finalTeam1Score, #finalTeam2Score {
+    font-size: 1.1em;
+    margin: 10px 0;
+}
+
+#winnerMessage {
+    color: #16a085;
+    font-size: 1.3em;
+}
+.player-inputs {
+    border: 1px solid #eee;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+}
+
+.rules-reminder {
+    font-size: 0.9em;
+    color: #555;
+    background-color: #e9ecef;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 15px;
+    line-height: 1.4;
+}
