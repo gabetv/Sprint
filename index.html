@@ -4,99 +4,106 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Sprint !</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Luckiest+Guy&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="app">
         <!-- Écran de Configuration -->
         <div id="configScreen" class="screen">
-            <h1>Sprint !</h1>
-            <h2>Configuration de la Partie</h2>
-            <div>
-                <label for="team1Name">Nom Équipe 1:</label>
-                <input type="text" id="team1Name" value="Alpha">
+            <h1 class="game-title">Sprint ! 🏁</h1>
+            <!-- "Configuration de la Partie" SUPPRIMÉ -->
+
+            <div class="config-section">
+                <label for="team1Name">Équipe 1</label>
+                <input type="text" id="team1Name" value="Les Fusées 🚀">
             </div>
-            <div>
-                <label for="team2Name">Nom Équipe 2:</label>
-                <input type="text" id="team2Name" value="Bravo">
+            <div class="config-section">
+                <label for="team2Name">Équipe 2</label>
+                <input type="text" id="team2Name" value="Les Éclairs ⚡">
             </div>
-            <!-- Sections pour les noms des joueurs individuels SUPPRIMÉES -->
-            <br>
-            <div>
-                <label for="themeSelect">Choisir un Thème :</label>
+
+            <div class="config-section">
+                <label for="themeSelect">Thème des Mots</label>
                 <select id="themeSelect">
-                    <option value="">Chargement des thèmes...</option>
+                    <option value="">Chargement...</option>
                 </select>
             </div>
-            <br>
-            <div>
-                <label for="roundsToPlay">Nombre de Manches (1 manche = 1 tour par équipe):</label>
-                <input type="number" id="roundsToPlay" value="1" min="1"> <!-- Valeur par défaut à 1 pour tester -->
+
+            <div class="config-grid">
+                <div class="config-section">
+                    <label for="roundsToPlay">Manches</label>
+                    <input type="number" id="roundsToPlay" value="1" min="1">
+                </div>
+                 <div class="config-section">
+                    <label for="timePerTurn">Temps / Tour (s)</label>
+                    <input type="number" id="timePerTurn" value="60" min="10">
+                </div>
             </div>
-             <div>
-                <label for="timePerTurn">Temps par tour (secondes):</label>
-                <input type="number" id="timePerTurn" value="60" min="10">
-            </div>
-            <button id="startGameBtn">Commencer la Partie</button>
+            <button id="startGameBtn" class="primary-button">🎉 Jouer ! 🎉</button>
             <p id="loadingMessage" class="info-message hidden">Chargement des mots...</p>
         </div>
 
         <!-- Écran "Prêt Équipe" -->
         <div id="readyScreen" class="screen hidden">
-            <h2 id="currentTeamTurnH2">Au tour de l'équipe <span id="currentTeamNameReady"></span> !</h2> <!-- Modifié -->
-            <p id="passPhoneInstruction">Passez le téléphone à un membre de l'équipe <span id="currentTeamNameInstruction"></span>. Les autres membres de l'équipe devinent. L'équipe adverse surveille !</p> <!-- Modifié -->
-            <p class="rules-reminder">
-                <strong>Rappel des points :</strong><br>
-                - Normal : 1 point<br>
-                - 3 Mots Max : 3 points<br>
-                - En Mimant : 5 points
-            </p>
-            <button id="teamReadyBtn">Équipe Prête !</button> <!-- Renommé -->
+            <h2 id="currentTeamTurnH2" class="screen-title">Au tour de l'équipe <span id="currentTeamNameReady"></span> !</h2>
+            <p id="passPhoneInstruction" class="instruction-text">Passez le téléphone à un membre de l'équipe <span id="currentTeamNameInstruction"></span>. Les autres membres de l'équipe devinent. L'équipe adverse surveille attentivement !</p>
+            <div class="rules-reminder card">
+                <h3>Rappel des Points 🎯</h3>
+                <p>Normal : <strong>1 pt</strong></p>
+                <p>3 Mots Max : <strong>3 pts</strong></p>
+                <p>En Mimant : <strong>5 pts</strong></p>
+            </div>
+            <button id="teamReadyBtn" class="action-button">Prêts à Sprinter !</button>
         </div>
 
         <!-- Écran de Jeu (Défi) -->
         <div id="gameScreen" class="screen hidden">
-            <div id="timerDisplay">00:00</div>
-            <div id="wordToGuess">MOT À DEVINER</div>
+            <div id="timerDisplay" class="timer">00:00</div>
+            <div id="wordToGuess" class="word-card">MOT À DEVINER</div>
             <p class="action-instructions">Comment le mot a-t-il été trouvé ?</p>
             <div class="actions-grid">
-                <button id="guessNormalBtn" data-points="1">Normal (1 pt)</button>
-                <button id="guess3WordsBtn" data-points="3">3 Mots Max (3 pts)</button>
-                <button id="guessMimeBtn" data-points="5">En Mimant (5 pts)</button>
-                <button id="passWordBtnGame">PASSER LE MOT</button>
+                <button id="guessNormalBtn" data-points="1" class="choice-button normal">Normal (1 pt)</button>
+                <button id="guess3WordsBtn" data-points="3" class="choice-button three-words">3 Mots Max (3 pts)</button>
+                <button id="guessMimeBtn" data-points="5" class="choice-button mime">En Mimant (5 pts)</button>
+                <button id="passWordBtnGame" class="choice-button pass">PASSER LE MOT</button>
             </div>
-            <div id="currentTurnScore">Points ce tour : 0</div>
+            <div id="currentTurnScore" class="turn-score-display">Points ce tour : 0</div>
         </div>
 
         <!-- Écran de Fin de Tour Équipe -->
         <div id="turnEndScreen" class="screen hidden">
-            <h2 id="turnEndMessage">Temps écoulé pour l'équipe <span id="teamNameTurnEnd"></span> !</h2> <!-- Modifié -->
-            <p id="turnScoreSummary">Score déclaré : X points.</p>
-            <p class="info-message">Validation par l'équipe adverse...</p>
+            <h2 id="turnEndMessage" class="screen-title">⏱️ Temps écoulé pour l'équipe <span id="teamNameTurnEnd"></span> !</h2>
+            <p id="turnScoreSummary" class="score-summary">Score déclaré : X points.</p>
+            <p class="info-message pulse">Validation par l'équipe adverse...</p>
         </div>
 
         <!-- Écran de Validation de Tour par l'Équipe Adverse -->
         <div id="validationScreen" class="screen hidden">
-            <h2>Validation du Tour de l'équipe <span id="validatingTeamName"></span></h2> <!-- Modifié -->
-            <p>Équipe <span id="opponentTeamNameValidator"></span>, veuillez vérifier les mots :</p>
-            <div id="validationList">
+            <h2 class="screen-title">🧐 Validation du Tour de l'équipe <span id="validatingTeamName"></span></h2>
+            <p class="instruction-text">Équipe <span id="opponentTeamNameValidator"></span>, à vous de vérifier :</p>
+            <div id="validationList" class="validation-area">
                 <!-- Les mots à valider seront listés ici par JS -->
             </div>
-            <div id="finalTurnScoreSection">
+            <div id="finalTurnScoreSection" class="card score-validation-summary">
                 <p>Score initialement déclaré : <strong id="initialTurnScoreValidator">X</strong></p>
                 <p>Score ajusté après validation : <strong id="adjustedTurnScoreValidator">Y</strong></p>
             </div>
-            <button id="confirmValidationBtn">Confirmer Validation & Continuer</button>
+            <button id="confirmValidationBtn" class="primary-button">Valider & Continuer 👍</button>
         </div>
 
         <!-- Écran de Fin de Partie -->
         <div id="gameOverScreen" class="screen hidden">
-            <h2>Partie Terminée !</h2>
-            <h3>Scores Finaux :</h3>
-            <p id="finalTeam1Score">Équipe Alpha : 0</p>
-            <p id="finalTeam2Score">Équipe Bravo : 0</p>
-            <h3 id="winnerMessage">L'équipe [Gagnante] remporte la partie !</h3>
-            <button id="newGameBtn">Nouvelle Partie</button>
+            <h2 class="screen-title">🏆 Partie Terminée ! 🏆</h2>
+            <div class="final-scores card">
+                <h3>Scores Finaux</h3>
+                <p id="finalTeam1Score">Équipe Alpha : 0</p>
+                <p id="finalTeam2Score">Équipe Bravo : 0</p>
+            </div>
+            <h3 id="winnerMessage" class="winner-announcement">L'équipe [Gagnante] remporte la partie !</h3>
+            <button id="newGameBtn" class="primary-button">Rejouer une partie !</button>
         </div>
     </div>
     <script src="script.js"></script>

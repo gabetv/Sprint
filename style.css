@@ -1,24 +1,45 @@
+/* Import des polices Google Fonts (déjà dans l'HTML via <link>) */
+/* font-family: 'Poppins', sans-serif; */
+/* font-family: 'Luckiest Guy', cursive; */
+
+:root {
+    --primary-color: #6a11cb; /* Violet profond */
+    --secondary-color: #2575fc; /* Bleu vibrant */
+    --accent-color: #ff5722; /* Orange pour les accents */
+    --success-color: #4CAF50; /* Vert pour succès */
+    --warning-color: #ffc107; /* Jaune pour avertissement/passer */
+    --danger-color: #f44336; /* Rouge pour contestation/erreur */
+    --light-bg-color: #f8f9fa; /* Fond très clair */
+    --dark-text-color: #343a40; /* Texte sombre principal */
+    --light-text-color: #ffffff;
+    --card-bg-color: #ffffff;
+    --border-radius-sm: 8px;
+    --border-radius-md: 12px;
+    --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    --box-shadow-light: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Poppins', sans-serif;
     margin: 0;
-    padding: 10px;
-    background-color: #f4f7f6;
-    color: #333;
+    padding: 15px;
+    background-image: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: var(--dark-text-color);
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     text-align: center;
-    -webkit-tap-highlight-color: transparent; /* Évite le flash bleu sur mobile au clic */
+    -webkit-tap-highlight-color: transparent;
 }
 
 #app {
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    background-color: var(--light-bg-color);
+    padding: 25px 30px;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--box-shadow);
     width: 100%;
-    max-width: 400px; /* Adapté pour mobile */
+    max-width: 420px;
     box-sizing: border-box;
 }
 
@@ -32,227 +53,299 @@ body {
     display: none !important;
 }
 
-h1, h2, h3 {
-    color: #2c3e50;
+/* Titres */
+.game-title {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 3.5em; /* Augmenté */
+    color: var(--primary-color);
+    margin-bottom: 25px;
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.1); /* Ombre légère */
 }
 
-h1 { font-size: 1.8em; margin-bottom: 20px; }
-h2 { font-size: 1.5em; margin-bottom: 15px; }
-h3 { font-size: 1.2em; margin-top: 15px; margin-bottom: 10px;}
+.screen-title {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 2em;
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+}
 
+h3 { /* Pour les sous-titres dans les cartes */
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+}
 
-label {
+/* Sections de Configuration */
+.config-section {
+    width: 100%;
+    margin-bottom: 18px;
+}
+.config-section label {
     display: block;
-    margin-top: 10px;
-    margin-bottom: 5px;
-    font-weight: bold;
-    color: #34495e;
+    font-weight: 600;
+    color: var(--dark-text-color);
+    margin-bottom: 6px;
+    text-align: left;
+    font-size: 0.95em;
+}
+.config-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+.config-grid .config-section {
+    margin-bottom: 0; /* Annuler la marge pour les items de la grille */
 }
 
 input[type="text"],
 input[type="number"],
 select {
-    width: calc(100% - 22px);
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #bdc3c7;
-    border-radius: 6px;
+    width: 100%; /* Prend toute la largeur de son conteneur */
+    padding: 12px 15px;
+    border: 1px solid #ced4da;
+    border-radius: var(--border-radius-sm);
     font-size: 1em;
     box-sizing: border-box;
-    background-color: white;
+    background-color: var(--card-bg-color);
+    color: var(--dark-text-color);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
-.player-inputs input[type="text"] {
-    margin-bottom: 5px;
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 0.2rem rgba(37, 117, 252, 0.25);
+    outline: none;
 }
 
-
+/* Boutons */
 button {
-    background-color: #3498db;
-    color: white;
-    padding: 12px 20px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    color: var(--light-text-color);
+    padding: 12px 25px;
     border: none;
-    border-radius: 6px;
+    border-radius: var(--border-radius-sm);
     cursor: pointer;
-    font-size: 1em;
-    font-weight: bold;
-    margin-top: 10px;
-    transition: background-color 0.2s ease;
-    width: 80%;
-    max-width: 300px;
+    font-size: 1.05em;
+    margin-top: 15px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    width: 100%; /* Boutons prennent pleine largeur par défaut */
+    max-width: 320px; /* Limiter la largeur max */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
 }
-
-button:hover {
-    background-color: #2980b9;
-}
-
 button:active {
-    transform: translateY(1px);
+    transform: translateY(2px);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
 }
 
-#addPlayerTeam1Btn, #addPlayerTeam2Btn {
-    background-color: #2ecc71;
-    font-size: 0.9em;
-    padding: 8px 15px;
-    width: auto;
+.primary-button {
+    background-color: var(--accent-color);
 }
-#addPlayerTeam1Btn:hover, #addPlayerTeam2Btn:hover {
-    background-color: #27ae60;
+.primary-button:hover {
+    background-color: #e64a19; /* Orange plus foncé */
 }
 
+.action-button { /* Pour "Prêts à Sprinter !" */
+    background-color: var(--success-color);
+}
+.action-button:hover {
+    background-color: #388e3c; /* Vert plus foncé */
+}
 
-#timerDisplay {
-    font-size: 3em;
+/* Écran de Jeu */
+.timer {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 4em;
     font-weight: bold;
-    color: #e74c3c;
-    margin: 20px 0;
+    color: var(--danger-color);
+    margin: 15px 0 25px;
+    text-shadow: 1px 1px 0px var(--light-text-color);
 }
 
-#wordToGuess {
-    font-size: 2em;
-    font-weight: bold;
-    color: #2c3e50;
-    background-color: #ecf0f1;
-    padding: 20px;
-    margin: 20px auto;
-    border-radius: 8px;
-    min-height: 50px;
+.word-card {
+    font-size: 2.2em;
+    font-weight: 600;
+    color: var(--dark-text-color);
+    background-color: var(--card-bg-color);
+    padding: 25px 20px;
+    margin: 0 auto 25px;
+    border-radius: var(--border-radius-md);
+    min-height: 70px;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 90%;
+    width: 95%;
     word-break: break-word;
+    box-shadow: var(--box-shadow-light);
+    border: 2px dashed var(--secondary-color);
 }
 
-#gameScreen .action-instructions {
-    font-size: 0.9em;
-    color: #555;
-    margin-top: 15px;
-    margin-bottom: 5px;
+.action-instructions {
+    font-size: 1em;
+    color: var(--dark-text-color);
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-weight: 600;
 }
 
-#gameScreen .actions-grid {
+.actions-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: 12px;
     width: 100%;
-    margin-top: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
-#gameScreen .actions-grid button {
+.actions-grid .choice-button { /* Classe pour les boutons de choix dans le jeu */
     width: 100%;
-    padding: 10px 5px;
+    padding: 12px 8px; /* Ajusté */
     font-size: 0.9em;
     margin-top: 0;
+    border-radius: var(--border-radius-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.choice-button.normal { background-color: var(--success-color); }
+.choice-button.normal:hover { background-color: #388e3c; }
+.choice-button.three-words { background-image: linear-gradient(to right, var(--secondary-color), #4facfe); } /* Dégradé bleu */
+.choice-button.three-words:hover { background-image: linear-gradient(to right, #4facfe, var(--secondary-color)); }
+.choice-button.mime { background-image: linear-gradient(to right, var(--primary-color), #a864f7); } /* Dégradé violet */
+.choice-button.mime:hover { background-image: linear-gradient(to right, #a864f7, var(--primary-color)); }
+.choice-button.pass { background-color: var(--warning-color); color: var(--dark-text-color); } /* Texte sombre sur jaune */
+.choice-button.pass:hover { background-color: #ffb300; }
+.actions-grid .choice-button.pass { grid-column: span 2; }
+
+
+.turn-score-display {
+    font-size: 1.2em;
+    font-weight: 600;
+    color: var(--primary-color);
 }
 
-#guessNormalBtn { background-color: #27ae60; }
-#guessNormalBtn:hover { background-color: #229954; }
-
-#guess3WordsBtn { background-color: #3498db; }
-#guess3WordsBtn:hover { background-color: #2980b9; }
-
-#guessMimeBtn { background-color: #9b59b6; }
-#guessMimeBtn:hover { background-color: #8e44ad; }
-
-#passWordBtnGame {
-    background-color: #f39c12;
-    grid-column: span 2;
-}
-#passWordBtnGame:hover { background-color: #d35400; }
-
-
-#currentTurnScore, #turnScoreSummary, #team1ScoreDisplay, #team2ScoreDisplay, #finalTeam1Score, #finalTeam2Score {
-    font-size: 1.1em;
-    margin: 10px 0;
-}
-
-#winnerMessage {
-    color: #16a085;
-    font-size: 1.3em;
-}
-.player-inputs {
-    border: 1px solid #eee;
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-}
-
-.rules-reminder {
-    font-size: 0.9em;
-    color: #555;
-    background-color: #e9ecef;
-    padding: 10px;
-    border-radius: 5px;
-    margin-top: 15px;
-    line-height: 1.4;
-}
-
-.info-message {
-    font-size: 0.9em;
-    color: #3498db;
-    margin-top: 10px;
-}
-
-/* Styles pour l'écran de validation */
-#validationScreen h2 span {
-    font-weight: normal;
-    color: #3498db;
-}
-
-#validationList {
+/* Cartes d'information (Rappel des règles, Scores, etc.) */
+.card {
+    background-color: var(--card-bg-color);
+    padding: 15px 20px;
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--box-shadow-light);
     width: 100%;
-    margin-top: 15px;
-    margin-bottom: 20px;
+    max-width: 350px; /* Limiter la largeur des cartes */
+    margin: 15px auto;
     text-align: left;
 }
-
-.validation-item {
-    background-color: #f9f9f9;
-    border: 1px solid #eee;
-    border-radius: 6px;
-    padding: 10px 15px;
-    margin-bottom: 10px;
-}
-
-.validation-item p {
+.rules-reminder p {
     margin: 5px 0;
     font-size: 0.95em;
 }
-
-.validation-item .status-guessed_pending_validation, /* Ajout pour la nouvelle dénomination */
-.validation-item .status-guessed { 
-    color: #27ae60; font-weight: bold; 
+.rules-reminder strong {
+    color: var(--accent-color);
 }
-.validation-item .status-passed { color: #f39c12; font-weight: bold; }
-.validation-item .status-contested_accepted { color: #e74c3c; font-weight: bold; } /* Nom du statut mis à jour */
-.validation-item .status-contested_rejected { color: #2980b9; font-weight: bold; } /* Nom du statut mis à jour */
 
+/* Textes d'instruction et messages */
+.instruction-text {
+    font-size: 1em;
+    line-height: 1.5;
+    color: #555;
+    margin-bottom: 20px;
+}
+.info-message {
+    font-size: 0.9em;
+    color: var(--secondary-color);
+    margin-top: 10px;
+    font-style: italic;
+}
+.pulse {
+    animation: pulseAnimation 1.5s infinite;
+}
+@keyframes pulseAnimation {
+    0% { opacity: 1; }
+    50% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
 
-.validation-item button.contest-btn,
-.validation-item button.undo-contest-btn { /* Simplifié, les autres boutons sont gérés par le statut */
-    font-size: 0.85em;
-    padding: 6px 10px;
+/* Écran de Validation */
+#validationScreen .screen-title span {
+    color: var(--accent-color); /* Le nom de l'équipe validée en couleur accent */
+}
+.validation-area {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+.validation-item {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: var(--border-radius-sm);
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    box-shadow: var(--box-shadow-light);
+}
+.validation-item p {
+    margin: 6px 0;
+    font-size: 0.95em;
+}
+.validation-item p strong {
+    color: var(--dark-text-color);
+}
+.validation-item .status-guessed_pending_validation { color: var(--success-color); font-weight: bold; }
+.validation-item .status-passed { color: var(--warning-color); font-weight: bold; color: var(--dark-text-color); }
+.validation-item .status-contested_accepted { color: var(--danger-color); font-weight: bold; }
+.validation-item .status-contested_rejected { color: var(--secondary-color); font-weight: bold; }
+
+.validation-item .validation-buttons button {
+    font-size: 0.8em;
+    padding: 6px 12px;
     width: auto;
-    margin-top: 5px;
-    margin-right: 5px;
+    margin-top: 8px;
+    margin-right: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
-button.contest-btn { background-color: #e74c3c; }
-button.contest-btn:hover { background-color: #c0392b; }
-button.undo-contest-btn { background-color: #95a5a6; }
-button.undo-contest-btn:hover { background-color: #7f8c8d; }
+button.contest-btn { background-color: var(--danger-color); }
+button.contest-btn:hover { background-color: #d32f2f; }
+button.undo-contest-btn { background-color: #78909c; } /* Gris bleu */
+button.undo-contest-btn:hover { background-color: #546e7a; }
 
-
-#finalTurnScoreSection p {
+.score-validation-summary p {
     font-size: 1.1em;
-    font-weight: bold;
+    font-weight: 600;
+    margin: 8px 0;
 }
-#initialTurnScoreValidator { color: #7f8c8d; }
-#adjustedTurnScoreValidator { color: #2c3e50; }
+#initialTurnScoreValidator { color: var(--dark-text-color); opacity: 0.7; }
+#adjustedTurnScoreValidator { color: var(--primary-color); font-size: 1.2em; }
 
-#confirmValidationBtn {
-    background-color: #16a085;
+/* Écran de Fin de Partie */
+.final-scores p {
+    font-size: 1.2em;
+    font-weight: 600;
+    margin: 8px 0;
+    color: var(--dark-text-color);
 }
-#confirmValidationBtn:hover {
-    background-color: #117a65;
+.final-scores p:first-of-type { color: var(--primary-color); } /* Couleur pour équipe 1 */
+.final-scores p:last-of-type { color: var(--secondary-color); } /* Couleur pour équipe 2 */
+
+.winner-announcement {
+    font-family: 'Luckiest Guy', cursive;
+    font-size: 1.8em;
+    color: var(--success-color);
+    margin-top: 25px;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.1);
+}
+
+/* Ajustements pour petits écrans si besoin */
+@media (max-width: 360px) {
+    .game-title { font-size: 2.8em; }
+    .screen-title { font-size: 1.7em; }
+    .word-card { font-size: 1.8em; padding: 20px 15px; }
+    button { padding: 10px 15px; font-size: 1em; }
+    .actions-grid .choice-button { font-size: 0.85em; }
+    #app { padding: 20px 15px; }
 }
