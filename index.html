@@ -14,8 +14,6 @@
         <!-- Écran de Configuration -->
         <div id="configScreen" class="screen">
             <h1 class="game-title">Sprint ! 🏁</h1>
-            <!-- "Configuration de la Partie" SUPPRIMÉ -->
-
             <div class="config-section">
                 <label for="team1Name">Équipe 1</label>
                 <input type="text" id="team1Name" value="Les Fusées 🚀">
@@ -24,14 +22,12 @@
                 <label for="team2Name">Équipe 2</label>
                 <input type="text" id="team2Name" value="Les Éclairs ⚡">
             </div>
-
             <div class="config-section">
                 <label for="themeSelect">Thème des Mots</label>
                 <select id="themeSelect">
                     <option value="">Chargement...</option>
                 </select>
             </div>
-
             <div class="config-grid">
                 <div class="config-section">
                     <label for="roundsToPlay">Manches</label>
@@ -64,13 +60,15 @@
             <div id="timerDisplay" class="timer">00:00</div>
             <div id="wordToGuess" class="word-card">MOT À DEVINER</div>
             <p class="action-instructions">Comment le mot a-t-il été trouvé ?</p>
-            <div class="actions-grid">
+            
+            <div class="actions-grid"> <!-- Changement ici pour la grille 2x2 -->
                 <button id="guessNormalBtn" data-points="1" class="choice-button normal">Normal (1 pt)</button>
                 <button id="guess3WordsBtn" data-points="3" class="choice-button three-words">3 Mots Max (3 pts)</button>
                 <button id="guessMimeBtn" data-points="5" class="choice-button mime">En Mimant (5 pts)</button>
                 <button id="passWordBtnGame" class="choice-button pass">PASSER LE MOT</button>
             </div>
-            <div id="currentTurnScore" class="turn-score-display">Points ce tour : 0</div>
+            
+            <!-- <div id="currentTurnScore" class="turn-score-display">Points ce tour : 0</div> Ligne pour le score du tour masquée/supprimée -->
         </div>
 
         <!-- Écran de Fin de Tour Équipe -->
@@ -84,9 +82,7 @@
         <div id="validationScreen" class="screen hidden">
             <h2 class="screen-title">🧐 Validation du Tour de l'équipe <span id="validatingTeamName"></span></h2>
             <p class="instruction-text">Équipe <span id="opponentTeamNameValidator"></span>, à vous de vérifier :</p>
-            <div id="validationList" class="validation-area">
-                <!-- Les mots à valider seront listés ici par JS -->
-            </div>
+            <div id="validationList" class="validation-area"></div>
             <div id="finalTurnScoreSection" class="card score-validation-summary">
                 <p>Score initialement déclaré : <strong id="initialTurnScoreValidator">X</strong></p>
                 <p>Score ajusté après validation : <strong id="adjustedTurnScoreValidator">Y</strong></p>

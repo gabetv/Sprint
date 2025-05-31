@@ -56,10 +56,10 @@ body {
 /* Titres */
 .game-title {
     font-family: 'Luckiest Guy', cursive;
-    font-size: 3.5em; /* Augmenté */
+    font-size: 3.5em;
     color: var(--primary-color);
     margin-bottom: 25px;
-    text-shadow: 2px 2px 0px rgba(0,0,0,0.1); /* Ombre légère */
+    text-shadow: 2px 2px 0px rgba(0,0,0,0.1);
 }
 
 .screen-title {
@@ -69,7 +69,7 @@ body {
     margin-bottom: 20px;
 }
 
-h3 { /* Pour les sous-titres dans les cartes */
+h3 {
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
     color: var(--primary-color);
@@ -99,13 +99,13 @@ h3 { /* Pour les sous-titres dans les cartes */
     margin-bottom: 20px;
 }
 .config-grid .config-section {
-    margin-bottom: 0; /* Annuler la marge pour les items de la grille */
+    margin-bottom: 0;
 }
 
 input[type="text"],
 input[type="number"],
 select {
-    width: 100%; /* Prend toute la largeur de son conteneur */
+    width: 100%;
     padding: 12px 15px;
     border: 1px solid #ced4da;
     border-radius: var(--border-radius-sm);
@@ -135,8 +135,8 @@ button {
     font-size: 1.05em;
     margin-top: 15px;
     transition: background-color 0.2s ease, transform 0.1s ease;
-    width: 100%; /* Boutons prennent pleine largeur par défaut */
-    max-width: 320px; /* Limiter la largeur max */
+    width: 100%;
+    max-width: 320px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.15);
 }
 button:active {
@@ -148,14 +148,14 @@ button:active {
     background-color: var(--accent-color);
 }
 .primary-button:hover {
-    background-color: #e64a19; /* Orange plus foncé */
+    background-color: #e64a19;
 }
 
-.action-button { /* Pour "Prêts à Sprinter !" */
+.action-button {
     background-color: var(--success-color);
 }
 .action-button:hover {
-    background-color: #388e3c; /* Vert plus foncé */
+    background-color: #388e3c;
 }
 
 /* Écran de Jeu */
@@ -194,48 +194,47 @@ button:active {
     font-weight: 600;
 }
 
+/* MODIFIÉ: Styles pour .actions-grid (était .actions-list avant) */
 .actions-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    grid-template-columns: 1fr 1fr; /* Deux colonnes égales */
+    gap: 12px; /* Espace entre les boutons */
     width: 100%;
-    margin-bottom: 20px;
+    max-width: 320px; /* Ajuster au besoin */
+    margin: 15px auto 20px auto; /* Centrer la grille */
 }
 
-.actions-grid .choice-button { /* Classe pour les boutons de choix dans le jeu */
+.actions-grid .choice-button {
     width: 100%;
-    padding: 12px 8px; /* Ajusté */
-    font-size: 0.9em;
+    padding: 12px 8px;
+    font-size: 0.9em; /* Ajuster si le texte est trop grand */
     margin-top: 0;
     border-radius: var(--border-radius-sm);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
+/* Les styles spécifiques pour .choice-button.normal, .three-words, .mime, .pass restent valides */
 .choice-button.normal { background-color: var(--success-color); }
 .choice-button.normal:hover { background-color: #388e3c; }
-.choice-button.three-words { background-image: linear-gradient(to right, var(--secondary-color), #4facfe); } /* Dégradé bleu */
+.choice-button.three-words { background-image: linear-gradient(to right, var(--secondary-color), #4facfe); }
 .choice-button.three-words:hover { background-image: linear-gradient(to right, #4facfe, var(--secondary-color)); }
-.choice-button.mime { background-image: linear-gradient(to right, var(--primary-color), #a864f7); } /* Dégradé violet */
+.choice-button.mime { background-image: linear-gradient(to right, var(--primary-color), #a864f7); }
 .choice-button.mime:hover { background-image: linear-gradient(to right, #a864f7, var(--primary-color)); }
-.choice-button.pass { background-color: var(--warning-color); color: var(--dark-text-color); } /* Texte sombre sur jaune */
+.choice-button.pass { background-color: var(--warning-color); color: var(--dark-text-color); }
 .choice-button.pass:hover { background-color: #ffb300; }
-.actions-grid .choice-button.pass { grid-column: span 2; }
+/* Le bouton PASSER prendra une cellule comme les autres dans une grille 2x2.
+   Si vous voulez qu'il prenne toute la largeur en bas d'une grille 2x2, il faudrait une 3ème ligne
+   ou une autre approche de layout. Pour l'instant, il sera à côté de "En Mimant". */
 
 
-.turn-score-display {
-    font-size: 1.2em;
-    font-weight: 600;
-    color: var(--primary-color);
-}
-
-/* Cartes d'information (Rappel des règles, Scores, etc.) */
+/* Cartes d'information */
 .card {
     background-color: var(--card-bg-color);
     padding: 15px 20px;
     border-radius: var(--border-radius-md);
     box-shadow: var(--box-shadow-light);
     width: 100%;
-    max-width: 350px; /* Limiter la largeur des cartes */
+    max-width: 350px;
     margin: 15px auto;
     text-align: left;
 }
@@ -271,7 +270,7 @@ button:active {
 
 /* Écran de Validation */
 #validationScreen .screen-title span {
-    color: var(--accent-color); /* Le nom de l'équipe validée en couleur accent */
+    color: var(--accent-color);
 }
 .validation-area {
     width: 100%;
@@ -310,7 +309,7 @@ button:active {
 }
 button.contest-btn { background-color: var(--danger-color); }
 button.contest-btn:hover { background-color: #d32f2f; }
-button.undo-contest-btn { background-color: #78909c; } /* Gris bleu */
+button.undo-contest-btn { background-color: #78909c; }
 button.undo-contest-btn:hover { background-color: #546e7a; }
 
 .score-validation-summary p {
@@ -328,8 +327,8 @@ button.undo-contest-btn:hover { background-color: #546e7a; }
     margin: 8px 0;
     color: var(--dark-text-color);
 }
-.final-scores p:first-of-type { color: var(--primary-color); } /* Couleur pour équipe 1 */
-.final-scores p:last-of-type { color: var(--secondary-color); } /* Couleur pour équipe 2 */
+.final-scores p:first-of-type { color: var(--primary-color); }
+.final-scores p:last-of-type { color: var(--secondary-color); }
 
 .winner-announcement {
     font-family: 'Luckiest Guy', cursive;
@@ -340,12 +339,12 @@ button.undo-contest-btn:hover { background-color: #546e7a; }
     text-shadow: 1px 1px 0px rgba(0,0,0,0.1);
 }
 
-/* Ajustements pour petits écrans si besoin */
+/* Ajustements pour petits écrans */
 @media (max-width: 360px) {
     .game-title { font-size: 2.8em; }
     .screen-title { font-size: 1.7em; }
     .word-card { font-size: 1.8em; padding: 20px 15px; }
     button { padding: 10px 15px; font-size: 1em; }
-    .actions-grid .choice-button { font-size: 0.85em; }
+    .actions-grid .choice-button { font-size: 0.85em; } /* Ajuster pour la grille */
     #app { padding: 20px 15px; }
 }

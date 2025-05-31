@@ -3,42 +3,64 @@
     "Chien", "Chat", "Éléphant", "Girafe", "Lion", "Tigre", "Ours", "Panda", "Singe", "Zèbre",
     "Kangourou", "Koala", "Lapin", "Renard", "Loup", "Crocodile", "Serpent", "Tortue", "Poisson", "Dauphin",
     "Baleine", "Requin", "Aigle", "Hibou", "Perroquet", "Canard", "Poule", "Vache", "Cochon", "Cheval",
-    "Mouton", "Chèvre", "Papillon", "Abeille", "Fourmi", "Araignée", "Moustique", "Grenouille", "Escargot", "Hérisson"
+    "Mouton", "Chèvre", "Papillon", "Abeille", "Fourmi", "Araignée", "Moustique", "Grenouille", "Escargot", "Hérisson",
+    "Paon", "Cygne", "Pingouin", "Autruche", "Flamant rose", "Colibri", "Corbeau", "Pigeon", "Moineau", "Chauve-souris",
+    "Lézard", "Salamandre", "Crabe", "Crevette", "Homard", "Méduse", "Étoile de mer", "Hippocampe", "Morse", "Phoque",
+    "Loutre", "Castor", "Écureuil", "Marmotte", "Hérisson", "Taupe", "Raton laveur", "Blaireau", "Belette", "Furet"
   ],
   "Objets du quotidien": [
     "Table", "Chaise", "Lampe", "Livre", "Stylo", "Crayon", "Ordinateur", "Téléphone", "Clé", "Portefeuille",
     "Sac", "Chaussure", "Chapeau", "Manteau", "Lunettes", "Montre", "Assiette", "Verre", "Couteau", "Fourchette",
     "Cuillère", "Casserole", "Poêle", "Réfrigérateur", "Four", "Micro-ondes", "Télévision", "Canapé", "Lit", "Armoire",
-    "Miroir", "Brosse à dents", "Savon", "Serviette", "Rideau", "Tapis", "Vase", "Horloge", "Cadre photo", "Plante"
+    "Miroir", "Brosse à dents", "Savon", "Serviette", "Rideau", "Tapis", "Vase", "Horloge", "Cadre photo", "Plante",
+    "Coussin", "Couverture", "Oreiller", "Réveil", "Calendrier", "Agenda", "Ciseaux", "Règle", "Gomme", "Taille-crayon",
+    "Agrafeuse", "Perforatrice", "Classeur", "Enveloppe", "Timbre", "Bouteille", "Tasse", "Bol", "Balai", "Pelle",
+    "Aspirateur", "Fer à repasser", "Sèche-cheveux", "Peigne", "Brosse", "Shampoing", "Dentifrice", "Parapluie", "Valise", "Sac à dos"
   ],
   "Métiers": [
     "Médecin", "Infirmier", "Pompier", "Policier", "Enseignant", "Boulanger", "Cuisinier", "Serveur", "Vendeur", "Caissier",
     "Chauffeur", "Pilote", "Astronaute", "Scientifique", "Ingénieur", "Architecte", "Artiste", "Musicien", "Acteur", "Danseur",
     "Journaliste", "Écrivain", "Avocat", "Juge", "Menuisier", "Plombier", "Électricien", "Mécanicien", "Coiffeur", "Fleuriste",
-    "Jardinier", "Agriculteur", "Vétérinaire", "Bibliothécaire", "Informaticien", "Webdesigner", "Sportif", "Entraîneur", "Facteur", "Secrétaire"
+    "Jardinier", "Agriculteur", "Vétérinaire", "Bibliothécaire", "Informaticien", "Webdesigner", "Sportif", "Entraîneur", "Facteur", "Secrétaire",
+    "Photographe", "Réalisateur", "Pharmacien", "Dentiste", "Psychologue", "Traducteur", "Guide touristique", "Archéologue", "Historien", "Chercheur",
+    "Designer", "Illustrateur", "Maçon", "Charpentier", "Peintre (artiste)", "Peintre (bâtiment)", "Sculpteur", "Musicien", "Comédien", "Magicien",
+    "Clown", "Athlète", "Explorateur", "Garde du corps", "Détective", "Espion", "Notaire", "Huissier", "Banquier", "Comptable"
   ],
   "Aliments & Boissons": [
     "Pomme", "Banane", "Orange", "Fraise", "Raisin", "Ananas", "Pastèque", "Citron", "Tomate", "Carotte",
     "Salade", "Pomme de terre", "Oignon", "Pain", "Fromage", "Yaourt", "Lait", "Œuf", "Poulet", "Poisson",
     "Viande", "Riz", "Pâtes", "Pizza", "Hamburger", "Frites", "Gâteau", "Chocolat", "Glace", "Bonbon",
-    "Eau", "Jus de fruit", "Soda", "Café", "Thé", "Vin", "Bière", "Soupe", "Sandwich", "Noix"
+    "Eau", "Jus de fruit", "Soda", "Café", "Thé", "Vin", "Bière", "Soupe", "Sandwich", "Noix",
+    "Kiwi", "Mangue", "Pêche", "Abricot", "Cerise", "Framboise", "Myrtille", "Concombre", "Poivron", "Aubergine",
+    "Courgette", "Champignon", "Brocoli", "Chou-fleur", "Asperge", "Épinard", "Miel", "Confiture", "Beurre", "Crème",
+    "Sucre", "Sel", "Poivre", "Huile", "Vinaigre", "Moutarde", "Ketchup", "Mayonnaise", "Biscuit", "Popcorn",
+    "Céréales", "Croissant", "Baguette", "Sushi", "Taco", "Crêpe", "Sirop", "Smoothie", "Limonade", "Infusion"
   ],
   "Lieux & Nature": [
     "Maison", "École", "Parc", "Plage", "Montagne", "Forêt", "Rivière", "Lac", "Océan", "Désert",
     "Ville", "Village", "Route", "Pont", "Gare", "Aéroport", "Magasin", "Restaurant", "Cinéma", "Musée",
     "Hôpital", "Bibliothèque", "Château", "Église", "Temple", "Cascade", "Volcan", "Grotte", "Île", "Jardin",
-    "Ferme", "Usine", "Bureau", "Stade", "Piscine", "Camping", "Champ", "Prairie", "Colline", "Vallée"
+    "Ferme", "Usine", "Bureau", "Stade", "Piscine", "Camping", "Champ", "Prairie", "Colline", "Vallée",
+    "Canyon", "Glacier", "Savane", "Jungle", "Marais", "Récif corallien", "Dune", "Archipel", "Péninsule", "Baie",
+    "Phare", "Moulin", "Gratte-ciel", "Immeuble", "Cabane", "Tente", "Igloo", "Palais", "Forteresse", "Ruines",
+    "Observatoire", "Laboratoire", "Centrale électrique", "Mine", "Carrière", "Port", "Quai", "Canal", "Tunnel", "Autoroute"
   ],
   "Sports & Loisirs": [
     "Football", "Basketball", "Tennis", "Natation", "Vélo", "Course", "Ski", "Surf", "Danse", "Musique",
     "Lecture", "Cinéma", "Voyage", "Jardinage", "Cuisine", "Peinture", "Dessin", "Photographie", "Jeux vidéo", "Puzzle",
     "Échecs", "Cartes", "Randonnée", "Escalade", "Yoga", "Pêche", "Camping", "Théâtre", "Concert", "Festival",
-    "Plongée", "Voile", "Golf", "Rugby", "Handball", "Volleyball", "Badminton", "Patinage", "Bowling", "Billard"
+    "Plongée", "Voile", "Golf", "Rugby", "Handball", "Volleyball", "Badminton", "Patinage", "Bowling", "Billard",
+    "Athlétisme", "Gymnastique", "Judo", "Karaté", "Boxe", "Escrime", "Tir à l'arc", "Équitation", "Pétanque", "Fléchettes",
+    "Skateboard", "Roller", "Surf des neiges", "Luge", "Bobsleigh", "Curling", "Hockey sur glace", "Water-polo", "Aviron", "Canoë-kayak",
+    "Bricolage", "Modélisme", "Collection", "Origami", "Sculpture", "Poterie", "Tricot", "Crochet", "Calligraphie", "Jonglerie"
   ],
   "Mixte (pour varier)": [
     "Amour", "Bonheur", "Tristesse", "Colère", "Peur", "Surprise", "Rêve", "Cauchemar", "Secret", "Aventure",
     "Vacances", "Fête", "Cadeau", "Argent", "Temps", "Histoire", "Science", "Art", "Magie", "Futur",
     "Passé", "Présent", "Chance", "Destin", "Liberté", "Paix", "Guerre", "Silence", "Bruit", "Couleur",
-    "Forme", "Taille", "Poids", "Vitesse", "Force", "Faiblesse", "Beauté", "Laideur", "Vérité", "Mensonge"
+    "Forme", "Taille", "Poids", "Vitesse", "Force", "Faiblesse", "Beauté", "Laideur", "Vérité", "Mensonge",
+    "Idée", "Pensée", "Solution", "Problème", "Question", "Réponse", "Début", "Fin", "Milieu", "Sommet",
+    "Base", "Centre", "Extrême", "Limite", "Espace", "Vide", "Plein", "Ombre", "Lumière", "Énergie",
+    "Esprit", "Âme", "Corps", "Santé", "Maladie", "Guérison", "Naissance", "Mort", "Vie", "Univers"
   ]
 }
