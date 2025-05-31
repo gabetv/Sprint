@@ -1,0 +1,44 @@
+{
+  "Animaux": [
+    "Chien", "Chat", "Éléphant", "Girafe", "Lion", "Tigre", "Ours", "Panda", "Singe", "Zèbre",
+    "Kangourou", "Koala", "Lapin", "Renard", "Loup", "Crocodile", "Serpent", "Tortue", "Poisson", "Dauphin",
+    "Baleine", "Requin", "Aigle", "Hibou", "Perroquet", "Canard", "Poule", "Vache", "Cochon", "Cheval",
+    "Mouton", "Chèvre", "Papillon", "Abeille", "Fourmi", "Araignée", "Moustique", "Grenouille", "Escargot", "Hérisson"
+  ],
+  "Objets du quotidien": [
+    "Table", "Chaise", "Lampe", "Livre", "Stylo", "Crayon", "Ordinateur", "Téléphone", "Clé", "Portefeuille",
+    "Sac", "Chaussure", "Chapeau", "Manteau", "Lunettes", "Montre", "Assiette", "Verre", "Couteau", "Fourchette",
+    "Cuillère", "Casserole", "Poêle", "Réfrigérateur", "Four", "Micro-ondes", "Télévision", "Canapé", "Lit", "Armoire",
+    "Miroir", "Brosse à dents", "Savon", "Serviette", "Rideau", "Tapis", "Vase", "Horloge", "Cadre photo", "Plante"
+  ],
+  "Métiers": [
+    "Médecin", "Infirmier", "Pompier", "Policier", "Enseignant", "Boulanger", "Cuisinier", "Serveur", "Vendeur", "Caissier",
+    "Chauffeur", "Pilote", "Astronaute", "Scientifique", "Ingénieur", "Architecte", "Artiste", "Musicien", "Acteur", "Danseur",
+    "Journaliste", "Écrivain", "Avocat", "Juge", "Menuisier", "Plombier", "Électricien", "Mécanicien", "Coiffeur", "Fleuriste",
+    "Jardinier", "Agriculteur", "Vétérinaire", "Bibliothécaire", "Informaticien", "Webdesigner", "Sportif", "Entraîneur", "Facteur", "Secrétaire"
+  ],
+  "Aliments & Boissons": [
+    "Pomme", "Banane", "Orange", "Fraise", "Raisin", "Ananas", "Pastèque", "Citron", "Tomate", "Carotte",
+    "Salade", "Pomme de terre", "Oignon", "Pain", "Fromage", "Yaourt", "Lait", "Œuf", "Poulet", "Poisson",
+    "Viande", "Riz", "Pâtes", "Pizza", "Hamburger", "Frites", "Gâteau", "Chocolat", "Glace", "Bonbon",
+    "Eau", "Jus de fruit", "Soda", "Café", "Thé", "Vin", "Bière", "Soupe", "Sandwich", "Noix"
+  ],
+  "Lieux & Nature": [
+    "Maison", "École", "Parc", "Plage", "Montagne", "Forêt", "Rivière", "Lac", "Océan", "Désert",
+    "Ville", "Village", "Route", "Pont", "Gare", "Aéroport", "Magasin", "Restaurant", "Cinéma", "Musée",
+    "Hôpital", "Bibliothèque", "Château", "Église", "Temple", "Cascade", "Volcan", "Grotte", "Île", "Jardin",
+    "Ferme", "Usine", "Bureau", "Stade", "Piscine", "Camping", "Champ", "Prairie", "Colline", "Vallée"
+  ],
+  "Sports & Loisirs": [
+    "Football", "Basketball", "Tennis", "Natation", "Vélo", "Course", "Ski", "Surf", "Danse", "Musique",
+    "Lecture", "Cinéma", "Voyage", "Jardinage", "Cuisine", "Peinture", "Dessin", "Photographie", "Jeux vidéo", "Puzzle",
+    "Échecs", "Cartes", "Randonnée", "Escalade", "Yoga", "Pêche", "Camping", "Théâtre", "Concert", "Festival",
+    "Plongée", "Voile", "Golf", "Rugby", "Handball", "Volleyball", "Badminton", "Patinage", "Bowling", "Billard"
+  ],
+  "Mixte (pour varier)": [
+    "Amour", "Bonheur", "Tristesse", "Colère", "Peur", "Surprise", "Rêve", "Cauchemar", "Secret", "Aventure",
+    "Vacances", "Fête", "Cadeau", "Argent", "Temps", "Histoire", "Science", "Art", "Magie", "Futur",
+    "Passé", "Présent", "Chance", "Destin", "Liberté", "Paix", "Guerre", "Silence", "Bruit", "Couleur",
+    "Forme", "Taille", "Poids", "Vitesse", "Force", "Faiblesse", "Beauté", "Laideur", "Vérité", "Mensonge"
+  ]
+}

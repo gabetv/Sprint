@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Le Relais des Défis</title>
+    <title>Sprint !</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="app">
         <!-- Écran de Configuration -->
         <div id="configScreen" class="screen">
-            <h1>Le Relais des Défis</h1>
+            <h1>Sprint !</h1>
             <h2>Configuration de la Partie</h2>
             <div>
                 <label for="team1Name">Nom Équipe 1:</label>
@@ -20,46 +20,44 @@
                 <label for="team2Name">Nom Équipe 2:</label>
                 <input type="text" id="team2Name" value="Bravo">
             </div>
-            <div id="team1Players" class="player-inputs">
-                <h3>Joueurs Équipe 1 (<span id="team1DisplayN">Alpha</span>)</h3>
-                <!-- Les champs pour les joueurs seront ajoutés par JS -->
-            </div>
-            <div id="team2Players" class="player-inputs">
-                <h3>Joueurs Équipe 2 (<span id="team2DisplayN">Bravo</span>)</h3>
-                <!-- Les champs pour les joueurs seront ajoutés par JS -->
-            </div>
-            <button id="addPlayerTeam1Btn">+ Joueur Équipe 1</button>
-            <button id="addPlayerTeam2Btn">+ Joueur Équipe 2</button>
-            <br><br>
+            <!-- Sections pour les noms des joueurs individuels SUPPRIMÉES -->
+            <br>
             <div>
-                <label for="roundsToPlay">Nombre de Manches:</label>
-                <input type="number" id="roundsToPlay" value="2" min="1">
+                <label for="themeSelect">Choisir un Thème :</label>
+                <select id="themeSelect">
+                    <option value="">Chargement des thèmes...</option>
+                </select>
+            </div>
+            <br>
+            <div>
+                <label for="roundsToPlay">Nombre de Manches (1 manche = 1 tour par équipe):</label>
+                <input type="number" id="roundsToPlay" value="1" min="1"> <!-- Valeur par défaut à 1 pour tester -->
             </div>
              <div>
                 <label for="timePerTurn">Temps par tour (secondes):</label>
                 <input type="number" id="timePerTurn" value="60" min="10">
             </div>
             <button id="startGameBtn">Commencer la Partie</button>
+            <p id="loadingMessage" class="info-message hidden">Chargement des mots...</p>
         </div>
 
-        <!-- Écran "Prêt Joueur" -->
+        <!-- Écran "Prêt Équipe" -->
         <div id="readyScreen" class="screen hidden">
-            <h2 id="currentPlayerTurn">Au tour de [Joueur] de l'équipe [Équipe] !</h2>
-            <p id="passPhoneInstruction">Passez le téléphone à [Joueur]. Les autres membres de son équipe devinent. L'équipe adverse surveille !</p>
+            <h2 id="currentTeamTurnH2">Au tour de l'équipe <span id="currentTeamNameReady"></span> !</h2> <!-- Modifié -->
+            <p id="passPhoneInstruction">Passez le téléphone à un membre de l'équipe <span id="currentTeamNameInstruction"></span>. Les autres membres de l'équipe devinent. L'équipe adverse surveille !</p> <!-- Modifié -->
             <p class="rules-reminder">
                 <strong>Rappel des points :</strong><br>
                 - Normal : 1 point<br>
                 - 3 Mots Max : 3 points<br>
                 - En Mimant : 5 points
             </p>
-            <button id="playerReadyBtn">Je suis Prêt !</button>
+            <button id="teamReadyBtn">Équipe Prête !</button> <!-- Renommé -->
         </div>
 
         <!-- Écran de Jeu (Défi) -->
         <div id="gameScreen" class="screen hidden">
             <div id="timerDisplay">00:00</div>
             <div id="wordToGuess">MOT À DEVINER</div>
-
             <p class="action-instructions">Comment le mot a-t-il été trouvé ?</p>
             <div class="actions-grid">
                 <button id="guessNormalBtn" data-points="1">Normal (1 pt)</button>
@@ -70,19 +68,31 @@
             <div id="currentTurnScore">Points ce tour : 0</div>
         </div>
 
-        <!-- Écran de Fin de Tour -->
+        <!-- Écran de Fin de Tour Équipe -->
         <div id="turnEndScreen" class="screen hidden">
-            <h2 id="turnEndMessage">Temps écoulé !</h2>
-            <p id="turnScoreSummary">Vous avez marqué X points.</p>
-            <h3>Scores Actuels :</h3>
-            <p id="team1ScoreDisplay">Équipe Alpha : 0</p>
-            <p id="team2ScoreDisplay">Équipe Bravo : 0</p>
-            <button id="nextPlayerBtn">Joueur Suivant / Fin de Manche</button>
+            <h2 id="turnEndMessage">Temps écoulé pour l'équipe <span id="teamNameTurnEnd"></span> !</h2> <!-- Modifié -->
+            <p id="turnScoreSummary">Score déclaré : X points.</p>
+            <p class="info-message">Validation par l'équipe adverse...</p>
+        </div>
+
+        <!-- Écran de Validation de Tour par l'Équipe Adverse -->
+        <div id="validationScreen" class="screen hidden">
+            <h2>Validation du Tour de l'équipe <span id="validatingTeamName"></span></h2> <!-- Modifié -->
+            <p>Équipe <span id="opponentTeamNameValidator"></span>, veuillez vérifier les mots :</p>
+            <div id="validationList">
+                <!-- Les mots à valider seront listés ici par JS -->
+            </div>
+            <div id="finalTurnScoreSection">
+                <p>Score initialement déclaré : <strong id="initialTurnScoreValidator">X</strong></p>
+                <p>Score ajusté après validation : <strong id="adjustedTurnScoreValidator">Y</strong></p>
+            </div>
+            <button id="confirmValidationBtn">Confirmer Validation & Continuer</button>
         </div>
 
         <!-- Écran de Fin de Partie -->
         <div id="gameOverScreen" class="screen hidden">
             <h2>Partie Terminée !</h2>
+            <h3>Scores Finaux :</h3>
             <p id="finalTeam1Score">Équipe Alpha : 0</p>
             <p id="finalTeam2Score">Équipe Bravo : 0</p>
             <h3 id="winnerMessage">L'équipe [Gagnante] remporte la partie !</h3>

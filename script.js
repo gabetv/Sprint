@@ -4,28 +4,25 @@ const screens = {
     ready: document.getElementById('readyScreen'),
     game: document.getElementById('gameScreen'),
     turnEnd: document.getElementById('turnEndScreen'),
+    validation: document.getElementById('validationScreen'),
     gameOver: document.getElementById('gameOverScreen')
 };
 
-// Configuration
 const team1NameInput = document.getElementById('team1Name');
 const team2NameInput = document.getElementById('team2Name');
-const team1PlayersDiv = document.getElementById('team1Players');
-const team2PlayersDiv = document.getElementById('team2Players');
-const team1DisplayN = document.getElementById('team1DisplayN');
-const team2DisplayN = document.getElementById('team2DisplayN');
-const addPlayerTeam1Btn = document.getElementById('addPlayerTeam1Btn'); // ID Corrigé
-const addPlayerTeam2Btn = document.getElementById('addPlayerTeam2Btn'); // ID Corrigé
+// Suppression des divs et boutons pour joueurs individuels
+const themeSelect = document.getElementById('themeSelect');
 const roundsToPlayInput = document.getElementById('roundsToPlay');
 const timePerTurnInput = document.getElementById('timePerTurn');
 const startGameBtn = document.getElementById('startGameBtn');
+const loadingMessage = document.getElementById('loadingMessage');
 
-// Écran Prêt
-const currentPlayerTurnH2 = document.getElementById('currentPlayerTurn');
+const currentTeamTurnH2 = document.getElementById('currentTeamTurnH2'); // Modifié
+const currentTeamNameReady = document.getElementById('currentTeamNameReady');
 const passPhoneInstructionP = document.getElementById('passPhoneInstruction');
-const playerReadyBtn = document.getElementById('playerReadyBtn');
+const currentTeamNameInstruction = document.getElementById('currentTeamNameInstruction');
+const teamReadyBtn = document.getElementById('teamReadyBtn'); // Renommé
 
-// Écran de Jeu
 const timerDisplay = document.getElementById('timerDisplay');
 const wordToGuessDiv = document.getElementById('wordToGuess');
 const guessNormalBtn = document.getElementById('guessNormalBtn');
@@ -34,14 +31,17 @@ const guessMimeBtn = document.getElementById('guessMimeBtn');
 const passWordBtnGame = document.getElementById('passWordBtnGame');
 const currentTurnScoreDiv = document.getElementById('currentTurnScore');
 
-// Écran Fin de Tour
 const turnEndMessageH2 = document.getElementById('turnEndMessage');
+const teamNameTurnEnd = document.getElementById('teamNameTurnEnd');
 const turnScoreSummaryP = document.getElementById('turnScoreSummary');
-const team1ScoreDisplayP = document.getElementById('team1ScoreDisplay');
-const team2ScoreDisplayP = document.getElementById('team2ScoreDisplay');
-const nextPlayerBtn = document.getElementById('nextPlayerBtn');
 
-// Écran Fin de Partie
+const validatingTeamNameSpan = document.getElementById('validatingTeamName');
+const opponentTeamNameValidatorSpan = document.getElementById('opponentTeamNameValidator');
+const validationListDiv = document.getElementById('validationList');
+const initialTurnScoreValidatorSpan = document.getElementById('initialTurnScoreValidator');
+const adjustedTurnScoreValidatorSpan = document.getElementById('adjustedTurnScoreValidator');
+const confirmValidationBtn = document.getElementById('confirmValidationBtn');
+
 const finalTeam1ScoreP = document.getElementById('finalTeam1Score');
 const finalTeam2ScoreP = document.getElementById('finalTeam2Score');
 const winnerMessageH3 = document.getElementById('winnerMessage');
@@ -50,137 +50,124 @@ const newGameBtn = document.getElementById('newGameBtn');
 // --- ÉTAT DU JEU ---
 let gameState = {
     teams: [
-        { name: "Alpha", players: [], score: 0, currentPlayerIndex: 0 },
-        { name: "Bravo", players: [], score: 0, currentPlayerIndex: 0 }
+        { name: "Alpha", score: 0 }, // Plus de 'players' ni 'currentPlayerIndex'
+        { name: "Bravo", score: 0 }
     ],
     currentTeamIndex: 0,
     currentRound: 1,
-    roundsToPlay: 2,
+    roundsToPlay: 1, // Mis à 1 par défaut pour faciliter les tests
     timePerTurn: 60,
     currentWord: "",
     currentTurnScore: 0,
     timerInterval: null,
     timeLeft: 0,
-    words: [ // Exemple de liste de mots - À remplacer/améliorer avec mots.json
-        "Banane", "Ordinateur", "Château", "Montagne", "Télescope", "Avion", "Bibliothèque", "Pizza", "Jardin", "Robot",
-        "Peinture", "Danse", "Musique", "Océan", "Désert", "Forêt", "Volcan", "Éléphant", "Girafe", "Crocodile",
-        "Astronaute", "Scientifique", "Détective", "Pirate", "Magicien", "Super-héros", "Dragon", "Licorne", "Fantôme",
-        "Plage", "Neige", "Arc-en-ciel", "Étoile filante", "Lune", "Soleil", "Planète", "Galaxie", "Livre", "Film",
-        "Chaussette", "Lampadaire", "Bicyclette", "Fromage", "Confiture", "Papillon", "Crayon", "Fenêtre", "Nuage", "Cascade"
-    ],
-    usedWords: []
+    currentThemeWords: [],
+    allWordsByTheme: {},
+    usedWordsInGame: [],
+    currentTurnActions: [],
 };
 
-// Simuler le chargement depuis mots.json pour l'instant
-// Si vous implémentez mots.json, décommentez et adaptez la logique de chargement
-// let toutesLesListesDeMots = {};
-// async function chargerMots() { ... voir implémentation précédente ... }
-
+const USED_WORDS_STORAGE_KEY_PREFIX = 'sprint_usedWords_';
 
 // --- FONCTIONS UTILITAIRES ---
 function showScreen(screenName) {
-    for (const key in screens) {
-        screens[key].classList.add('hidden');
-    }
-    if (screens[screenName]) {
-        screens[screenName].classList.remove('hidden');
-    } else {
-        console.error("Tentative d'affichage d'un écran inconnu:", screenName);
+    for (const key in screens) { screens[key].classList.add('hidden'); }
+    if (screens[screenName]) { screens[screenName].classList.remove('hidden'); }
+    else { console.error("Écran inconnu:", screenName); }
+}
+// Suppression de addPlayerInput et updateTeamNameDisplays (simplifié dans setup)
+
+// --- CHARGEMENT DES MOTS ET GESTION DES THÈMES ---
+async function loadWordsAndSetupThemes() {
+    loadingMessage.classList.remove('hidden');
+    startGameBtn.disabled = true;
+    try {
+        const response = await fetch('mots.json');
+        if (!response.ok) { throw new Error(`HTTP error! status: ${response.status}`); }
+        gameState.allWordsByTheme = await response.json();
+        populateThemeSelector();
+        console.log("Mots et thèmes chargés.");
+    } catch (error) {
+        console.error("Impossible de charger mots.json:", error);
+        alert("Erreur: Impossible de charger la liste de mots.");
+        themeSelect.innerHTML = '<option value="">Erreur</option>';
+    } finally {
+        loadingMessage.classList.add('hidden');
+        startGameBtn.disabled = false;
     }
 }
 
-function addPlayerInput(teamIndex) {
-    const teamPlayersDiv = teamIndex === 0 ? team1PlayersDiv : team2PlayersDiv;
-    const playerInputs = teamPlayersDiv.getElementsByTagName('input');
-    const playerNumber = playerInputs.length + 1;
-
-    // Limiter le nombre de joueurs (optionnel)
-    if (playerInputs.length >= 10) { // Limite à 10 joueurs par équipe
-        alert("Maximum 10 joueurs par équipe.");
-        return;
+function populateThemeSelector() {
+    themeSelect.innerHTML = '';
+    if (Object.keys(gameState.allWordsByTheme).length === 0) {
+        const errOpt = document.createElement('option');
+        errOpt.value = ""; errOpt.textContent = "Aucun thème";
+        themeSelect.appendChild(errOpt); return;
     }
-
-    const newInput = document.createElement('input');
-    newInput.type = 'text';
-    newInput.placeholder = `Nom Joueur ${playerNumber}`;
-    newInput.className = `player-name-input team${teamIndex + 1}-player`;
-    teamPlayersDiv.appendChild(newInput);
+    for (const theme in gameState.allWordsByTheme) {
+        const opt = document.createElement('option');
+        opt.value = theme; opt.textContent = theme;
+        themeSelect.appendChild(opt);
+    }
 }
 
+function getUsedWordsForTheme(theme) {
+    const stored = localStorage.getItem(USED_WORDS_STORAGE_KEY_PREFIX + theme);
+    return stored ? JSON.parse(stored) : [];
+}
 
-function updateTeamNameDisplays() {
-    team1DisplayN.textContent = team1NameInput.value.trim() || "Équipe 1";
-    team2DisplayN.textContent = team2NameInput.value.trim() || "Équipe 2";
+function addWordToUsedForTheme(theme, word) {
+    const usedWords = getUsedWordsForTheme(theme);
+    if (!usedWords.includes(word)) {
+        usedWords.push(word);
+        localStorage.setItem(USED_WORDS_STORAGE_KEY_PREFIX + theme, JSON.stringify(usedWords));
+    }
 }
 
 // --- LOGIQUE DU JEU ---
-
 function setupNewGame() {
     gameState.teams[0].name = team1NameInput.value.trim() || "Alpha";
     gameState.teams[1].name = team2NameInput.value.trim() || "Bravo";
+    // Plus besoin de récupérer les joueurs individuels
 
-    gameState.teams[0].players = Array.from(team1PlayersDiv.getElementsByClassName('player-name-input'))
-                                     .map(input => input.value.trim())
-                                     .filter(name => name !== "");
-    gameState.teams[1].players = Array.from(team2PlayersDiv.getElementsByClassName('player-name-input'))
-                                     .map(input => input.value.trim())
-                                     .filter(name => name !== "");
-
-    if (gameState.teams[0].players.length === 0 || gameState.teams[1].players.length === 0) {
-        alert("Chaque équipe doit avoir au moins un joueur !");
-        return false;
+    const selectedTheme = themeSelect.value;
+    if (!selectedTheme || !gameState.allWordsByTheme[selectedTheme]) {
+        alert("Veuillez choisir un thème valide !"); return false;
     }
-
-    // Si vous utilisez mots.json, assurez-vous que gameState.words est peuplé ici
-    // Par exemple, si vous avez un menu de sélection de catégorie:
-    // gameState.words = toutesLesListesDeMots[selectedCategory] || toutesLesListesDeMots.facile;
-    // Pour l'instant, on utilise la liste fixe.
-
-    gameState.teams[0].score = 0;
-    gameState.teams[1].score = 0;
-    gameState.teams[0].currentPlayerIndex = 0;
-    gameState.teams[1].currentPlayerIndex = 0;
-    gameState.currentTeamIndex = 0;
+    gameState.currentThemeWords = [...gameState.allWordsByTheme[selectedTheme]];
+    gameState.usedWordsInGame = [];
+    gameState.teams[0].score = 0; gameState.teams[1].score = 0;
+    gameState.currentTeamIndex = 0; // L'équipe 0 (Alpha) commence toujours
     gameState.currentRound = 1;
-    gameState.roundsToPlay = parseInt(roundsToPlayInput.value) || 2;
+    gameState.roundsToPlay = parseInt(roundsToPlayInput.value) || 1;
     gameState.timePerTurn = parseInt(timePerTurnInput.value) || 60;
-    gameState.usedWords = [];
-
-    console.log("Jeu configuré:", gameState);
+    updateGlobalScoreDisplays();
+    console.log("Jeu configuré pour le thème:", selectedTheme, gameState);
     return true;
 }
 
-function startNextTurn() {
+function prepareTeamTurn() { // Anciennement startNextTurn, simplifié
     const currentTeam = gameState.teams[gameState.currentTeamIndex];
-    const currentPlayer = currentTeam.players[currentTeam.currentPlayerIndex];
-
-    if (!currentPlayer) {
-        console.error("Erreur: Joueur actuel indéfini.", currentTeam, currentTeam.currentPlayerIndex);
-        alert("Erreur dans la configuration des joueurs. Veuillez recommencer.");
-        showScreen('config');
-        return;
-    }
-
-    currentPlayerTurnH2.textContent = `Au tour de ${currentPlayer} de l'équipe ${currentTeam.name} !`;
-    passPhoneInstructionP.textContent = `Passez le téléphone à ${currentPlayer}. Les autres membres de son équipe devinent. L'équipe ${gameState.teams[(gameState.currentTeamIndex + 1) % 2].name} surveille !`;
+    currentTeamTurnH2.textContent = `Au tour de l'équipe ${currentTeam.name} !`;
+    currentTeamNameReady.textContent = currentTeam.name; // Pour le H2
+    currentTeamNameInstruction.textContent = currentTeam.name; // Pour les instructions
+    passPhoneInstructionP.textContent = `Passez le téléphone à un membre de l'équipe ${currentTeam.name}. Les autres membres de l'équipe devinent. L'équipe ${gameState.teams[(gameState.currentTeamIndex + 1) % 2].name} surveille !`;
     showScreen('ready');
 }
 
-function startPlayerTurn() {
+function startPlayerTurn() { // Le nom est conservé mais c'est le tour de l'équipe
+    gameState.currentTurnActions = [];
     gameState.currentTurnScore = 0;
     currentTurnScoreDiv.textContent = `Points ce tour : 0`;
     gameState.timeLeft = gameState.timePerTurn;
     displayTime();
     selectNewWord();
     showScreen('game');
-
     clearInterval(gameState.timerInterval);
     gameState.timerInterval = setInterval(() => {
         gameState.timeLeft--;
         displayTime();
-        if (gameState.timeLeft <= 0) {
-            endPlayerTurn();
-        }
+        if (gameState.timeLeft <= 0) { endTeamTurn(); } // Renommé
     }, 1000);
 }
 
@@ -191,169 +178,215 @@ function displayTime() {
 }
 
 function selectNewWord() {
-    if (gameState.words.length === 0) {
-        wordToGuessDiv.textContent = "PLUS DE MOTS !";
-        gameState.currentWord = "";
-        // Potentiellement désactiver les boutons de jeu si aucun mot n'est disponible
-        guessNormalBtn.disabled = true;
-        guess3WordsBtn.disabled = true;
-        guessMimeBtn.disabled = true;
-        passWordBtnGame.disabled = true;
-        return;
-    } else {
-        guessNormalBtn.disabled = false;
-        guess3WordsBtn.disabled = false;
-        guessMimeBtn.disabled = false;
-        passWordBtnGame.disabled = false;
-    }
-
-
-    let availableWords = gameState.words.filter(word => !gameState.usedWords.includes(word));
+    const selectedTheme = themeSelect.value;
+    const globallyUsedWordsForTheme = getUsedWordsForTheme(selectedTheme);
+    let availableWords = gameState.currentThemeWords.filter(word => 
+        !globallyUsedWordsForTheme.includes(word) && !gameState.usedWordsInGame.includes(word)
+    );
     if (availableWords.length === 0) {
-        console.warn("Tous les mots ont été utilisés dans cette partie. Réinitialisation de la liste des mots disponibles.");
-        gameState.usedWords = []; // Réinitialiser pour permettre de réutiliser les mots
-        availableWords = [...gameState.words];
-        if (availableWords.length === 0) { // Double vérification si la liste initiale était vide
-             wordToGuessDiv.textContent = "LISTE VIDE !";
-             gameState.currentWord = "";
-             return;
+        console.warn(`Plus de mots inédits pour "${selectedTheme}". Recherche mots non utilisés DANS CETTE PARTIE.`);
+        availableWords = gameState.currentThemeWords.filter(word => !gameState.usedWordsInGame.includes(word));
+        if (availableWords.length === 0) {
+            wordToGuessDiv.textContent = "FIN DES MOTS !"; gameState.currentWord = "";
+            [guessNormalBtn, guess3WordsBtn, guessMimeBtn, passWordBtnGame].forEach(btn => btn.disabled = true);
+            alert(`Tous les mots du thème "${selectedTheme}" ont été joués dans cette partie !`); return;
         }
-        alert("Tous les mots de la liste ont été joués ! Les mots vont commencer à se répéter.");
+        alert(`Attention, les mots du thème "${selectedTheme}" commencent à se répéter (par rapport aux parties précédentes).`);
     }
+    [guessNormalBtn, guess3WordsBtn, guessMimeBtn, passWordBtnGame].forEach(btn => btn.disabled = false);
     const randomIndex = Math.floor(Math.random() * availableWords.length);
     gameState.currentWord = availableWords[randomIndex];
-    gameState.usedWords.push(gameState.currentWord);
+    gameState.usedWordsInGame.push(gameState.currentWord);
     wordToGuessDiv.textContent = gameState.currentWord;
-    console.log("Nouveau mot:", gameState.currentWord);
+    console.log("Nouveau mot:", gameState.currentWord, `(Thème: ${selectedTheme})`);
 }
 
-function handleWordAttempt(points) {
-    if (gameState.timeLeft > 0 && gameState.currentWord !== "") { // S'assurer qu'il y a un mot à deviner
+function handleWordAttempt(points, methodName) {
+    if (gameState.timeLeft > 0 && gameState.currentWord !== "") {
+        gameState.currentTurnActions.push({
+            word: gameState.currentWord, method: methodName, points: points, status: "guessed_pending_validation"
+        });
         gameState.currentTurnScore += points;
-        gameState.teams[gameState.currentTeamIndex].score += points;
         currentTurnScoreDiv.textContent = `Points ce tour : ${gameState.currentTurnScore}`;
-        console.log(`Mot trouvé (${points} pts)! Score équipe ${gameState.teams[gameState.currentTeamIndex].name}: ${gameState.teams[gameState.currentTeamIndex].score}`);
+        console.log(`Mot "${gameState.currentWord}" déclaré (${methodName}, ${points} pts)`);
         selectNewWord();
     }
 }
 
 function handlePassWordGame() {
     if (gameState.timeLeft > 0 && gameState.currentWord !== "") {
+        gameState.currentTurnActions.push({
+            word: gameState.currentWord, method: "Passé", points: 0, status: "passed"
+        });
         console.log("Mot passé:", gameState.currentWord);
         selectNewWord();
     }
 }
 
-function endPlayerTurn() {
+function endTeamTurn() { // Renommé de endPlayerTurn
     clearInterval(gameState.timerInterval);
-    turnEndMessageH2.textContent = `Temps écoulé pour ${gameState.teams[gameState.currentTeamIndex].players[gameState.teams[gameState.currentTeamIndex].currentPlayerIndex]} !`;
-    turnScoreSummaryP.textContent = `L'équipe a marqué ${gameState.currentTurnScore} points pendant ce tour.`;
-    
-    updateScoreDisplaysTurnEnd();
+    const teamWhoPlayed = gameState.teams[gameState.currentTeamIndex];
+    teamNameTurnEnd.textContent = teamWhoPlayed.name; // Pour l'écran de fin de tour
+    turnEndMessageH2.textContent = `Temps écoulé pour l'équipe ${teamWhoPlayed.name} !`;
+    turnScoreSummaryP.textContent = `Score déclaré : ${gameState.currentTurnScore} points.`;
     showScreen('turnEnd');
+    setTimeout(setupAndShowValidationScreen, 2000);
 }
 
-function updateScoreDisplaysTurnEnd() {
-    team1ScoreDisplayP.textContent = `${gameState.teams[0].name} : ${gameState.teams[0].score}`;
-    team2ScoreDisplayP.textContent = `${gameState.teams[1].name} : ${gameState.teams[1].score}`;
+function setupAndShowValidationScreen() {
+    const teamPlayingIndex = gameState.currentTeamIndex;
+    const opponentTeamIndex = (teamPlayingIndex + 1) % 2;
+    const teamPlaying = gameState.teams[teamPlayingIndex];
+    const opponentTeam = gameState.teams[opponentTeamIndex];
+
+    validatingTeamNameSpan.textContent = teamPlaying.name; // Plus de nom de joueur
+    opponentTeamNameValidatorSpan.textContent = opponentTeam.name;
+    validationListDiv.innerHTML = '';
+    
+    gameState.currentTurnActions.forEach((action, index) => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'validation-item';
+        let statusText = '', buttonsHtml = '';
+        const statusClass = `status-${action.status.replace(/_/g, '-')}`; // ex: status-guessed-pending-validation
+
+        if (action.status === "guessed_pending_validation") {
+            statusText = `<span class="${statusClass}">DÉCLARÉ TROUVÉ</span>`;
+            buttonsHtml = `<button class="contest-btn" data-action-index="${index}">Contester (${action.points} pts)</button>`;
+        } else if (action.status === "passed") {
+            statusText = `<span class="${statusClass}">PASSÉ</span>`;
+        } else if (action.status === "contested_rejected") { // Contestation rejetée = mot validé
+            statusText = `<span class="${statusClass}">CONTESTATION ANNULÉE (Validé)</span>`;
+            buttonsHtml = `<button class="contest-btn" data-action-index="${index}">Re-Contester (${action.points} pts)</button>`;
+        } else if (action.status === "contested_accepted") { // Contestation acceptée = 0 point
+            statusText = `<span class="${statusClass}">CONTESTÉ (0 pt)</span>`;
+            buttonsHtml = `<button class="undo-contest-btn" data-action-index="${index}">Annuler Contestation (${action.points} pts)</button>`;
+        }
+        itemDiv.innerHTML = `
+            <p>Mot : <strong>${action.word}</strong></p>
+            <p>Méthode déclarée : <strong>${action.method} (${action.points} pt${action.points > 1 ? 's' : ''})</strong></p>
+            <p>Statut : ${statusText}</p>
+            <div class="validation-buttons">${buttonsHtml}</div>`;
+        validationListDiv.appendChild(itemDiv);
+    });
+
+    validationListDiv.querySelectorAll('.contest-btn, .undo-contest-btn').forEach(btn => {
+        // Supprimer l'ancien écouteur s'il existe pour éviter les duplications
+        const newBtn = btn.cloneNode(true); // Cloner pour supprimer les anciens écouteurs
+        btn.parentNode.replaceChild(newBtn, btn);
+        newBtn.addEventListener('click', (e) => {
+            const actionIndex = parseInt(e.target.dataset.actionIndex);
+            const isContestingFromScratch = e.target.classList.contains('contest-btn');
+            handleContestAction(actionIndex, isContestingFromScratch);
+        });
+    });
+    initialTurnScoreValidatorSpan.textContent = gameState.currentTurnScore;
+    updateAdjustedScoreValidator();
+    showScreen('validation');
+}
+
+function handleContestAction(actionIndex, isContestingFromScratch) {
+    const action = gameState.currentTurnActions[actionIndex];
+    if (!action || action.status === "passed") return;
+
+    if (isContestingFromScratch) {
+        action.status = "contested_accepted";
+    } else {
+        action.status = "contested_rejected";
+    }
+    setupAndShowValidationScreen(); // Redessine la liste et réattache les écouteurs
+}
+
+function updateAdjustedScoreValidator() {
+    let adjustedScore = 0;
+    gameState.currentTurnActions.forEach(action => {
+        if (action.status === "guessed_pending_validation" || action.status === "contested_rejected") {
+            adjustedScore += action.points;
+        }
+    });
+    adjustedTurnScoreValidatorSpan.textContent = adjustedScore;
+    return adjustedScore;
+}
+
+confirmValidationBtn.addEventListener('click', () => {
+    const teamPlayingIndex = gameState.currentTeamIndex;
+    let finalPointsForTurn = 0;
+    gameState.currentTurnActions.forEach(action => {
+        if (action.status === "guessed_pending_validation" || action.status === "contested_rejected") {
+            finalPointsForTurn += action.points;
+            addWordToUsedForTheme(themeSelect.value, action.word);
+        }
+    });
+    gameState.teams[teamPlayingIndex].score += finalPointsForTurn;
+    console.log(`Tour validé. Score final tour: ${finalPointsForTurn}. Score total ${gameState.teams[teamPlayingIndex].name}: ${gameState.teams[teamPlayingIndex].score}`);
+    updateGlobalScoreDisplays();
+    advanceToNextPlayerOrRound(); // C'est ici qu'on avance
+});
+
+function updateGlobalScoreDisplays() {
+    finalTeam1ScoreP.textContent = `${gameState.teams[0].name} : ${gameState.teams[0].score}`;
+    finalTeam2ScoreP.textContent = `${gameState.teams[1].name} : ${gameState.teams[1].score}`;
 }
 
 function advanceToNextPlayerOrRound() {
-    gameState.teams[gameState.currentTeamIndex].currentPlayerIndex++;
+    // On change d'équipe
+    gameState.currentTeamIndex = (gameState.currentTeamIndex + 1) % 2;
 
-    if (gameState.teams[gameState.currentTeamIndex].currentPlayerIndex >= gameState.teams[gameState.currentTeamIndex].players.length) {
-        gameState.teams[gameState.currentTeamIndex].currentPlayerIndex = 0;
-        gameState.currentTeamIndex = (gameState.currentTeamIndex + 1) % 2;
-
-        if (gameState.currentTeamIndex === 0) { // Un tour complet de table (les deux équipes ont joué)
-            gameState.currentRound++;
-            console.log("Manche terminée. Passage à la manche", gameState.currentRound);
-        }
+    // Si on revient à l'équipe 0, une manche complète est terminée
+    if (gameState.currentTeamIndex === 0) {
+        gameState.currentRound++;
+        console.log(`FIN DE MANCHE. Passage à la manche ${gameState.currentRound}.`);
     }
+    
+    console.log(`Prochain tour: Équipe ${gameState.teams[gameState.currentTeamIndex].name}, Manche ${gameState.currentRound}`);
 
     if (gameState.currentRound > gameState.roundsToPlay) {
+        console.log("Nombre de manches atteint. Fin de partie.");
         endGame();
     } else {
-        startNextTurn();
+        prepareTeamTurn();
     }
 }
 
 function endGame() {
-    finalTeam1ScoreP.textContent = `${gameState.teams[0].name} : ${gameState.teams[0].score}`;
-    finalTeam2ScoreP.textContent = `${gameState.teams[1].name} : ${gameState.teams[1].score}`;
-
+    updateGlobalScoreDisplays();
+    let winnerText = "";
     if (gameState.teams[0].score > gameState.teams[1].score) {
-        winnerMessageH3.textContent = `L'équipe ${gameState.teams[0].name} remporte la partie ! 🎉`;
+        winnerText = `L'équipe ${gameState.teams[0].name} remporte la partie ! 🎉`;
     } else if (gameState.teams[1].score > gameState.teams[0].score) {
-        winnerMessageH3.textContent = `L'équipe ${gameState.teams[1].name} remporte la partie ! 🎉`;
+        winnerText = `L'équipe ${gameState.teams[1].name} remporte la partie ! 🎉`;
     } else {
-        winnerMessageH3.textContent = "Égalité ! Bien joué aux deux équipes ! 🤝";
+        winnerText = "Égalité ! Bien joué aux deux équipes ! 🤝";
     }
+    winnerMessageH3.textContent = winnerText;
+    console.log("Fin de partie. Scores:", gameState.teams[0].name, gameState.teams[0].score, ";", gameState.teams[1].name, gameState.teams[1].score);
     showScreen('gameOver');
 }
 
 // --- ÉCOUTEURS D'ÉVÉNEMENTS ---
-addPlayerTeam1Btn.addEventListener('click', () => addPlayerInput(0));
-addPlayerTeam2Btn.addEventListener('click', () => addPlayerInput(1));
-team1NameInput.addEventListener('input', updateTeamNameDisplays);
-team2NameInput.addEventListener('input', updateTeamNameDisplays);
+// Suppression des addPlayerTeamXBtn des écouteurs
+// team1NameInput et team2NameInput ne sont plus nécessaires ici s'ils ne font qu'updater un affichage qui n'existe plus.
+// Mais on les garde si on veut quand même permettre de changer les noms d'équipe affichés ailleurs.
 
-startGameBtn.addEventListener('click', async () => {
-    // Si vous implémentez le chargement de mots.json, attendez-le ici :
-    // if (Object.keys(toutesLesListesDeMots).length === 0) {
-    //    await chargerMots();
-    // }
-    // if (gameState.words.length === 0 && toutesLesListesDeMots.facile) {
-    //    gameState.words = [...toutesLesListesDeMots.facile];
-    // } // etc.
-
-    if (setupNewGame()) {
-        startNextTurn();
-    }
+startGameBtn.addEventListener('click', () => {
+    if (setupNewGame()) { prepareTeamTurn(); }
 });
 
-playerReadyBtn.addEventListener('click', startPlayerTurn);
+teamReadyBtn.addEventListener('click', startPlayerTurn); // Reste startPlayerTurn car c'est le début du tour d'action
 
-guessNormalBtn.addEventListener('click', () => {
-    const points = parseInt(guessNormalBtn.dataset.points);
-    handleWordAttempt(points);
-});
-guess3WordsBtn.addEventListener('click', () => {
-    const points = parseInt(guess3WordsBtn.dataset.points);
-    handleWordAttempt(points);
-});
-guessMimeBtn.addEventListener('click', () => {
-    const points = parseInt(guessMimeBtn.dataset.points);
-    handleWordAttempt(points);
-});
+guessNormalBtn.addEventListener('click', () => handleWordAttempt(parseInt(guessNormalBtn.dataset.points), "Normal"));
+guess3WordsBtn.addEventListener('click', () => handleWordAttempt(parseInt(guess3WordsBtn.dataset.points), "3 Mots Max"));
+guessMimeBtn.addEventListener('click', () => handleWordAttempt(parseInt(guessMimeBtn.dataset.points), "En Mimant"));
 passWordBtnGame.addEventListener('click', handlePassWordGame);
 
-nextPlayerBtn.addEventListener('click', advanceToNextPlayerOrRound);
-
 newGameBtn.addEventListener('click', () => {
-    // Ne pas réinitialiser les noms d'équipes et de joueurs pour plus de commodité
-    // mais réinitialiser les affichages des joueurs au cas où ils auraient été vidés
-    // Si les divs sont vides, on les repeuple avec les H3
-    if (!team1PlayersDiv.querySelector('h3')) {
-        team1PlayersDiv.innerHTML = `<h3>Joueurs Équipe 1 (<span id="team1DisplayN">${team1NameInput.value || "Alpha"}</span>)</h3>`;
-    }
-    if (!team2PlayersDiv.querySelector('h3')) {
-        team2PlayersDiv.innerHTML = `<h3>Joueurs Équipe 2 (<span id="team2DisplayN">${team2NameInput.value || "Bravo"}</span>)</h3>`;
-    }
-    // Conserver les champs de joueurs existants, ne pas en ajouter par défaut à chaque nouvelle partie.
-    // Les joueurs peuvent les modifier s'ils le souhaitent sur l'écran de config.
+    // Pas besoin de gérer les divs de joueurs ici
     showScreen('config');
 });
 
 // --- INITIALISATION ---
-showScreen('config');
-// Ajouter 2 champs de joueurs par défaut pour chaque équipe au démarrage initial
-if (team1PlayersDiv.getElementsByTagName('input').length === 0) {
-    addPlayerInput(0);
-    addPlayerInput(0);
-}
-if (team2PlayersDiv.getElementsByTagName('input').length === 0) {
-    addPlayerInput(1);
-    addPlayerInput(1);
-}
-updateTeamNameDisplays();
+document.addEventListener('DOMContentLoaded', () => {
+    loadWordsAndSetupThemes();
+    showScreen('config');
+    // Plus besoin d'ajouter des champs de joueurs par défaut
+    screens.validation.classList.add('hidden');
+});
