@@ -64,6 +64,9 @@ function playSound(audioElement) {
 }
 
 // --- ÉTAT DU JEU ---
+const FREE_THEMES_COUNT = 6;
+let unlockedThemes = []; // Pour stocker les noms des thèmes débloqués
+
 let gameState = {
     teams: [ { name: "Alpha", score: 0 }, { name: "Bravo", score: 0 } ],
     currentTeamIndex: 0, currentRound: 1, roundsToPlay: 1, timePerTurn: 60,
@@ -72,15 +75,36 @@ let gameState = {
     usedWordsInGame: [],
     themesResetInCurrentGame: [],
     actionButtonLock: false,
-    currentTurnActions: [], // S'assurer qu'il est bien initialisé ici ou dans setupNewGame
+    currentTurnActions: [],
 };
 const USED_WORDS_STORAGE_KEY_PREFIX = 'sprint_usedWords_';
+const UNLOCKED_THEMES_STORAGE_KEY = 'sprint_unlockedThemes';
 
 // --- FONCTIONS UTILITAIRES ---
 function showScreen(screenName) {
     for (const key in screens) { screens[key].classList.add('hidden'); }
     if (screens[screenName]) { screens[screenName].classList.remove('hidden'); }
     else { console.error("Écran inconnu:", screenName); }
+}
+
+function loadUnlockedThemes() {
+    const stored = localStorage.getItem(UNLOCKED_THEMES_STORAGE_KEY);
+    unlockedThemes = stored ? JSON.parse(stored) : [];
+    console.log("Thèmes débloqués chargés depuis localStorage:", unlockedThemes);
+}
+
+function saveUnlockedThemes() {
+    localStorage.setItem(UNLOCKED_THEMES_STORAGE_KEY, JSON.stringify(unlockedThemes));
+}
+
+function unlockTheme(themeName) {
+    if (!unlockedThemes.includes(themeName)) {
+        unlockedThemes.push(themeName);
+        saveUnlockedThemes();
+        console.log(`Thème "${themeName}" marqué comme débloqué.`);
+        return true;
+    }
+    return false;
 }
 
 // --- CHARGEMENT DES MOTS ET GESTION DES THÈMES ---
@@ -90,7 +114,8 @@ async function loadWordsAndSetupThemes() {
         const response = await fetch('mots.json');
         if (!response.ok) { throw new Error(`HTTP error! status: ${response.status}`); }
         gameState.allWordsByTheme = await response.json();
-        populateThemeSelector(); console.log("Mots et thèmes chargés.");
+        populateThemeSelector();
+        console.log("Mots et thèmes chargés.");
     } catch (error) {
         console.error("Impossible de charger mots.json:", error);
         alert("Erreur: Impossible de charger la liste de mots.");
@@ -99,17 +124,35 @@ async function loadWordsAndSetupThemes() {
         loadingMessage.classList.add('hidden'); startGameBtn.disabled = false;
     }
 }
+
 function populateThemeSelector() {
     themeSelect.innerHTML = '';
     if (Object.keys(gameState.allWordsByTheme).length === 0) {
         const errOpt = document.createElement('option'); errOpt.value = ""; errOpt.textContent = "Aucun thème";
         themeSelect.appendChild(errOpt); return;
     }
+
+    let themeCounter = 0;
     for (const theme in gameState.allWordsByTheme) {
-        const opt = document.createElement('option'); opt.value = theme; opt.textContent = theme;
+        const opt = document.createElement('option');
+        opt.value = theme;
+        opt.textContent = theme;
+
+        if (themeCounter < FREE_THEMES_COUNT) {
+            // Thèmes gratuits
+        } else {
+            if (unlockedThemes.includes(theme)) {
+                opt.textContent += " ✅";
+            } else {
+                opt.textContent += " 🔒 (Déverrouiller)";
+                opt.dataset.requiresUnlock = "true";
+            }
+        }
         themeSelect.appendChild(opt);
+        themeCounter++;
     }
 }
+
 function getUsedWordsForTheme(theme) {
     const stored = localStorage.getItem(USED_WORDS_STORAGE_KEY_PREFIX + theme);
     return stored ? JSON.parse(stored) : [];
@@ -127,9 +170,19 @@ function setupNewGame() {
     gameState.teams[0].name = team1NameInput.value.trim() || "Alpha";
     gameState.teams[1].name = team2NameInput.value.trim() || "Bravo";
     const selectedTheme = themeSelect.value;
+
     if (!selectedTheme || !gameState.allWordsByTheme[selectedTheme]) {
-        alert("Veuillez choisir un thème valide !"); return false;
+        alert("Erreur : Aucun thème valide sélectionné pour démarrer.");
+        return false;
     }
+    // Vérification de sécurité si un thème nécessitant déverrouillage est passé par erreur
+    const selectedOption = themeSelect.options[themeSelect.selectedIndex];
+    if (selectedOption.dataset.requiresUnlock === "true" && !unlockedThemes.includes(selectedTheme)) {
+        alert(`Erreur : Tentative de démarrage avec le thème premium "${selectedTheme}" non déverrouillé.`);
+        return false;
+    }
+
+
     gameState.currentThemeWords = [...gameState.allWordsByTheme[selectedTheme]];
     gameState.usedWordsInGame = [];
     gameState.themesResetInCurrentGame = [];
@@ -138,10 +191,11 @@ function setupNewGame() {
     gameState.roundsToPlay = parseInt(roundsToPlayInput.value) || 1;
     gameState.timePerTurn = parseInt(timePerTurnInput.value) || 60;
     gameState.actionButtonLock = false;
-    gameState.currentTurnActions = []; // Important de réinitialiser ici
+    gameState.currentTurnActions = [];
     updateGlobalScoreDisplays(); console.log("Jeu configuré:", selectedTheme, gameState);
     return true;
 }
+
 function prepareTeamTurn() {
     const currentTeam = gameState.teams[gameState.currentTeamIndex];
     currentTeamTurnH2.textContent = `Au tour de l'équipe ${currentTeam.name} !`;
@@ -150,8 +204,9 @@ function prepareTeamTurn() {
     passPhoneInstructionP.textContent = `Passez le téléphone à un membre de l'équipe ${currentTeam.name}. Les autres de l'équipe devinent. L'équipe ${gameState.teams[(gameState.currentTeamIndex + 1) % 2].name} surveille !`;
     showScreen('ready');
 }
+
 function startPlayerTurn() {
-    gameState.currentTurnActions = []; // Assurer la réinitialisation ici aussi
+    gameState.currentTurnActions = [];
     gameState.currentTurnScore = 0;
     gameState.timeLeft = gameState.timePerTurn; displayTime();
     gameState.actionButtonLock = false;
@@ -304,14 +359,14 @@ function setupAndShowValidationScreen() {
             action.adjustedPoints = 0;
         } else if (action.status === "contested_accepted") {
             statusTxt = `<span class="${statusBaseClass}contested-accepted">CONTESTÉ (0 pt)</span>`;
-            action.adjustedPoints = 0; // S'assurer que c'est 0
+            action.adjustedPoints = 0;
              pointsAdjustmentHtml = `
                 <button class="adjust-points-btn" data-action-index="${index}" data-new-points="1" title="Valider comme Normal (1pt)">1pt</button>
                 <button class="adjust-points-btn" data-action-index="${index}" data-new-points="3" title="Valider comme 3 Mots (3pts)">3pts</button>
                 <button class="adjust-points-btn" data-action-index="${index}" data-new-points="5" title="Valider comme Mime (5pts)">5pts</button>
                 <small>(Initialement: ${action.points} pts)</small>
             `;
-        } else { // "guessed_pending_validation" ou "contested_rejected" (après ajustement non-nul)
+        } else { 
             statusTxt = `<span class="${statusBaseClass}validated">VALIDÉ (${action.adjustedPoints} pt${action.adjustedPoints !== 1 ? 's' : ''})</span>`;
             if (action.adjustedPoints !== action.points) {
                  statusTxt += ` <small>(Initial: ${action.points} pts)</small>`;
@@ -350,16 +405,12 @@ function setupAndShowValidationScreen() {
 function handlePointsAdjustment(actionIndex, newPoints) {
     const action = gameState.currentTurnActions[actionIndex];
     if (!action || action.status === "passed") return;
-
     action.adjustedPoints = newPoints;
-
     if (newPoints === 0) {
         action.status = "contested_accepted";
     } else {
-        action.status = "contested_rejected"; // Signifie validé, mais potentiellement avec des points différents de l'initial.
-                                              // "guessed_pending_validation" est l'état avant tout arbitrage.
+        action.status = "contested_rejected"; 
     }
-    
     setupAndShowValidationScreen(); 
 }
 
@@ -369,7 +420,7 @@ function updateAdjustedScoreValidator() {
         if (typeof act.adjustedPoints !== 'undefined') {
              adjustedTotalScore += act.adjustedPoints;
         } else if (act.status !== "passed") {
-            adjustedTotalScore += act.points; // Fallback
+            adjustedTotalScore += act.points;
         }
     });
     adjustedTurnScoreValidatorSpan.textContent = adjustedTotalScore;
@@ -384,7 +435,6 @@ confirmValidationBtn.addEventListener('click', () => {
             finalPtsForTurn += act.adjustedPoints;
             addWordToUsedForTheme(themeSelect.value, act.word);
         }
-        // Les mots passés ou contestés (adjustedPoints = 0) ne rapportent pas de points et ne sont pas ajoutés à usedWordsForTheme.
     });
     gameState.teams[teamIdx].score += finalPtsForTurn;
     console.log(`Tour validé. Score final tour:${finalPtsForTurn}. Score total ${gameState.teams[teamIdx].name}:${gameState.teams[teamIdx].score}`);
@@ -417,8 +467,45 @@ function endGame() {
     console.log("Fin partie. Scores:", gameState.teams[0].name, gameState.teams[0].score, ";", gameState.teams[1].name, gameState.teams[1].score);
     showScreen('gameOver');
 }
+
 // --- ÉCOUTEURS D'ÉVÉNEMENTS ---
-startGameBtn.addEventListener('click', () => { if (setupNewGame()) { prepareTeamTurn(); }});
+startGameBtn.addEventListener('click', () => {
+    const selectedOption = themeSelect.options[themeSelect.selectedIndex];
+    const selectedThemeName = selectedOption.value;
+
+    if (selectedOption.dataset.requiresUnlock === "true" && !unlockedThemes.includes(selectedThemeName)) {
+        if (confirm(`Le thème "${selectedThemeName}" est un thème premium.\n\nSouhaitez-vous simuler le visionnage d'une publicité pour le déverrouiller gratuitement pour cette session ?\n(Cette fonctionnalité sera complète dans l'application.)`)) {
+            unlockTheme(selectedThemeName);
+            alert(`Thème "${selectedThemeName}" déverrouillé pour cette session ! Vous pouvez maintenant le sélectionner et cliquer à nouveau sur "Jouer !".`);
+            populateThemeSelector(); 
+            for (let i = 0; i < themeSelect.options.length; i++) { // Resélectionner le thème
+                if (themeSelect.options[i].value === selectedThemeName) {
+                    themeSelect.selectedIndex = i;
+                    break;
+                }
+            }
+            return; 
+        } else {
+            let firstFreeIndex = -1;
+            for (let i = 0; i < themeSelect.options.length; i++) {
+                if (themeSelect.options[i].dataset.requiresUnlock !== "true") {
+                    firstFreeIndex = i;
+                    break;
+                }
+            }
+            if (firstFreeIndex !== -1) {
+                themeSelect.selectedIndex = firstFreeIndex;
+            }
+            return; 
+        }
+    }
+
+    // Si on arrive ici, le thème est jouable
+    if (setupNewGame()) {
+        prepareTeamTurn();
+    }
+});
+
 teamReadyBtn.addEventListener('click', startPlayerTurn);
 
 guessNormalBtn.addEventListener('click', () => handleWordAttempt(parseInt(guessNormalBtn.dataset.points), "Normal"));
@@ -430,7 +517,8 @@ newGameBtn.addEventListener('click', () => { showScreen('config'); });
 
 // --- INITIALISATION ---
 document.addEventListener('DOMContentLoaded', () => {
-    loadWordsAndSetupThemes();
+    loadUnlockedThemes(); 
+    loadWordsAndSetupThemes(); 
     showScreen('config');
 
     if (showRulesBtn && rulesModal && closeRulesModalBtn) {
