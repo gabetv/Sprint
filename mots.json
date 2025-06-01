@@ -94,4 +94,28 @@
   ],
   "Pokémon (1ère Génération)": [
     "Bulbizarre", "Herbizarre", "Florizarre", "Salamèche", "Reptincel", "Dracaufeu", "Carapuce", "Carabaffe", "Tortank",
-    "Chenipan", "Chrysacier", "Papilusion", "Aspicot", "Coconfort", "D
+    "Chenipan", "Chrysacier", "Papilusion", "Aspicot", "Coconfort", "Dardargnan", "Roucool", "Roucoups", "Roucarnage",
+    "Rattata"
+  ],
+ "Séries TV (Années 2000)": [
+    "Lost", "Les Soprano", "Sur écoute (The Wire)", "Six Feet Under", "24 heures chrono", "Friends (fin)", "Alias", "Scrubs",
+    "Dr House", "Grey's Anatomy", "Desperate Housewives", "Prison Break", "Heroes", "Dexter", "Battlestar Galactica (reboot)",
+    "Veronica Mars", "The Office (US)", "Malcolm", "Gilmore Girls", "Newport Beach (The O.C.)", "Les Frères Scott (One Tree Hill)",
+    "Smallville", "Charmed (fin)", "Buffy contre les vampires (fin)", "Angel (fin)", "Stargate SG-1 (partie)", "Stargate Atlantis",
+    "NCIS", "Les Experts (CSI)", "Monk", "Psych : Enquêteur malgré lui", "How I Met Your Mother (début)", "Supernatural (début)",
+    "Doctor Who (reboot)", "Friday Night Lights", "Mad Men (début)", "Breaking Bad (début)", "Kaamelott", "Caméra Café",
+    "Un gars, une fille (France)", "Plus belle la vie (début)", "Deadwood", "Rome", "Arrested Development", "Flight of the Conchords",
+    "Entourage", "Nip/Tuck", "The Shield", "Queer as Folk (US)", "Gilmore Girls", "Boston Justice", "Urgences (fin)"
+  ],
+  "Séries TV (Années 2010)": [
+    "Game of Thrones", "Breaking Bad (fin)", "The Walking Dead", "Sherlock", "Downton Abbey", "Homeland", "Mad Men (fin)",
+    "Parks and Recreation", "Community", "Modern Family", "The Big Bang Theory (partie)", "How I Met YourMother (fin)",
+    "Dexter (fin)", "True Detective (saison 1)", "Fargo (saison 1)", "House of Cards", "Orange Is the New Black", "Black Mirror",
+    "Peaky Blinders", "Vikings", "Stranger Things (début)", "The Crown (début)", "Westworld (début)", "Mr. Robot",
+    "Narcos", "Better Call Saul (début)", "The Americans", "Hannibal", "Orphan Black", "Brooklyn Nine-Nine",
+    "Veep", "Silicon Valley", "Louie", "Girls", "Broadchurch", "The Killing (US)", "Person of Interest",
+    "Suits", "Scandal", "Revenge", "Once Upon a Time", "American Horror Story", "True Blood (fin)", "Sons of Anarchy (fin)",
+    "Boardwalk Empire", "Justified", "Luther", "Dix pour cent", "Le Bureau des Légendes", "Engrenages (partie)",
+    "Baron Noir (début)", "The Handmaid's Tale (début)", "This Is Us (début)", "Atlanta (début)", "Fleabag (début)"
+  ] // <<<<< PAS DE VIRGULE ICI SI C'EST LA DERNIÈRE CATÉGORIE DU FICHIER
+} // FIN DU FICHIER
