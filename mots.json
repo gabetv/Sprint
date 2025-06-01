@@ -120,5 +120,46 @@
     "Suits", "Scandal", "Revenge", "Once Upon a Time", "American Horror Story", "True Blood (fin)", "Sons of Anarchy (fin)",
     "Boardwalk Empire", "Justified", "Luther", "Dix pour cent", "Le Bureau des Légendes", "Engrenages (partie)",
     "Baron Noir (début)", "The Handmaid's Tale (début)", "This Is Us (début)", "Atlanta (début)", "Fleabag (début)"
+  ],
+  "Marques Célèbres": [
+    "Nike", "Adidas", "Apple", "Samsung", "Google", "Microsoft", "Amazon", "Facebook", "Coca-Cola", "Pepsi",
+    "McDonald's", "Burger King", "KFC", "Starbucks", "Toyota", "Honda", "Ford", "BMW", "Mercedes-Benz", "Audi",
+    "Sony", "Panasonic", "LG", "Zara", "H&M", "Gucci", "Louis Vuitton", "Chanel", "Rolex", "Netflix", "Disney",
+    "Lego", "Nintendo", "PlayStation", "Xbox", "IKEA", "Red Bull", "L'Oréal", "Nescafé", "Pampers"
+  ],
+  "Instruments de Musique": [
+    "Guitare", "Piano", "Violon", "Batterie", "Flûte", "Trompette", "Saxophone", "Clarinette", "Violoncelle", "Contrebasse",
+    "Harpe", "Accordéon", "Ukulélé", "Banjo", "Mandoline", "Xylophone", "Tambourin", "Triangle", "Maracas", "Harmonica",
+    "Synthétiseur", "Orgue", "Grosse caisse", "Cymbale", "Basse électrique", "Cor", "Trombone", "Hautbois", "Basson"
+  ],
+  "Pays du Monde (Capitales)": [
+    "France (Paris)", "Allemagne (Berlin)", "Italie (Rome)", "Espagne (Madrid)", "Royaume-Uni (Londres)", "États-Unis (Washington)", "Canada (Ottawa)", "Japon (Tokyo)", "Chine (Pékin)", "Russie (Moscou)",
+    "Brésil (Brasilia)", "Argentine (Buenos Aires)", "Australie (Canberra)", "Inde (New Delhi)", "Égypte (Le Caire)", "Afrique du Sud (Pretoria)", "Mexique (Mexico)", "Portugal (Lisbonne)", "Grèce (Athènes)", "Suède (Stockholm)",
+    "Norvège (Oslo)", "Finlande (Helsinki)", "Danemark (Copenhague)", "Belgique (Bruxelles)", "Suisse (Berne)", "Autriche (Vienne)", "Pologne (Varsovie)", "Irlande (Dublin)", "Turquie (Ankara)", "Corée du Sud (Séoul)"
+  ],
+  "Termes Informatiques & Internet": [
+    "Ordinateur", "Logiciel", "Matériel", "Internet", "Navigateur", "Moteur de recherche", "Email", "Réseau social", "Application", "Smartphone",
+    "Tablette", "Clavier", "Souris", "Écran", "Imprimante", "Routeur", "Modem", "Wi-Fi", "Bluetooth", "Algorithme",
+    "Base de données", "Serveur", "Client", "Programmation", "Développeur", "Site web", "URL", "Lien hypertexte", "Téléchargement", "Virus",
+    "Antivirus", "Pare-feu", "Cybersecurité", "Cloud", "Streaming", "Podcast", "Blog", "Hashtag", "Mème", "Pixel"
+  ],
+  "Figures Historiques": [
+    "Jules César", "Cléopâtre", "Alexandre le Grand", "Napoléon Bonaparte", "Jeanne d'Arc", "Léonard de Vinci", "Albert Einstein", "Marie Curie", "Charlemagne", "Gengis Khan",
+    "Christophe Colomb", "Louis XIV", "Reine Victoria", "Mahatma Gandhi", "Nelson Mandela", "Martin Luther King Jr.", "Winston Churchill", "Abraham Lincoln", "George Washington", "Isaac Newton",
+    "Galilée", "Socrate", "Platon", "Aristote", "Confucius", "Bouddha", "Moïse", "Jésus-Christ", "Mahomet"
+  ],
+  "Super-Héros & Vilains (Comics)": [
+    "Superman", "Batman", "Spider-Man", "Wonder Woman", "Iron Man", "Captain America", "Hulk", "Thor", "Flash", "Green Lantern",
+    "Aquaman", "Black Widow", "Hawkeye", "Doctor Strange", "Black Panther", "Ant-Man", "Captain Marvel", "Joker", "Lex Luthor", "Green Goblin",
+    "Docteur Octopus", "Magneto", "Thanos", "Loki", "Catwoman", "Harley Quinn", "Pingouin", "Double-Face", "Bane"
+  ],
+  "Éléments Chimiques (Courants)": [
+    "Hydrogène (H)", "Hélium (He)", "Lithium (Li)", "Carbone (C)", "Azote (N)", "Oxygène (O)", "Fluor (F)", "Sodium (Na)", "Magnésium (Mg)", "Aluminium (Al)",
+    "Silicium (Si)", "Phosphore (P)", "Soufre (S)", "Chlore (Cl)", "Potassium (K)", "Calcium (Ca)", "Fer (Fe)", "Cuivre (Cu)", "Zinc (Zn)", "Argent (Ag)",
+    "Or (Au)", "Mercure (Hg)", "Plomb (Pb)", "Étain (Sn)", "Iode (I)", "Néon (Ne)", "Argon (Ar)", "Uranium (U)", "Plutonium (Pu)"
+  ],
+  "Expressions Françaises (Littéral)": [
+    "Avoir le cafard", "Donner sa langue au chat", "Poser un lapin", "Tomber dans les pommes", "Avoir un chat dans la gorge", "Pleuvoir des cordes", "Être sur son 31", "Se faire rouler dans la farine", "Mettre la main à la pâte", "Ne pas y aller par quatre chemins",
+    "Chercher midi à quatorze heures", "Raconter des salades", "Prendre ses jambes à son cou", "Avoir la chair de poule", "Faire la grasse matinée", "Coûter les yeux de la tête", "Passer du coq à l'âne", "Mettre les pieds dans le plat", "Se serrer la ceinture", "Avoir le cœur sur la main"
   ]
 }
