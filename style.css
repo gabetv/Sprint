@@ -159,7 +159,7 @@ button:active {
 }
 
 .secondary-button { /* Ex: Bouton "Règles du Jeu" */
-    background-color: #78909c; /* Gris bleu */
+    background-color: #78909c;
     font-size: 0.9em;
     padding: 10px 20px;
     margin-top: 10px;
@@ -184,17 +184,24 @@ button:active {
     font-weight: 600;
     color: var(--dark-text-color);
     background-color: var(--card-bg-color);
-    padding: 25px 20px;
-    margin: 0 auto 25px;
+    padding: 25px 20px;         /* Espace intérieur */
+    margin-left: auto;          /* Pour le centrage horizontal */
+    margin-right: auto;         /* Pour le centrage horizontal */
+    margin-bottom: 25px;        /* Marge en bas */
     border-radius: var(--border-radius-md);
-    min-height: 70px;
+    min-height: 70px;           /* Hauteur minimale */
+    width: 95%;                 /* Largeur par rapport à son conteneur */
+    /* max-width: 380px; */    /* Optionnel: décommentez si #app peut être plus large que 420px */
+    
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 95%;
-    word-break: break-word;
+    justify-content: center;    /* Centre le contenu (le texte) horizontalement */
+    align-items: center;        /* Centre le contenu (le texte) verticalement */
+    text-align: center;         /* Assure que le texte lui-même est centré */
+    
+    word-break: break-word;     /* Pour couper les mots longs */
     box-shadow: var(--box-shadow-light);
     border: 2px dashed var(--secondary-color);
+    box-sizing: border-box;     /* S'assurer que padding et border sont inclus dans la width/height */
 }
 
 .action-instructions {
@@ -307,46 +314,45 @@ button:active {
     width: auto;
     margin-top: 8px;
     margin-right: 6px;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.5px; /* Peut être retiré si text-transform: none */
     border: 1px solid transparent; /* Base pour l'état actif */
 }
 
 button.adjust-points-btn {
-    background-color: #B0BEC5; /* Gris clair */
+    background-color: #B0BEC5; 
     color: var(--dark-text-color);
-    text-transform: none; /* Pour que "Normal (1pt)" etc. soit plus lisible */
+    text-transform: none; 
 }
 button.adjust-points-btn:hover {
     background-color: #90A4AE;
 }
-button.adjust-points-btn.active { /* Style pour le bouton de points actuellement sélectionné */
+button.adjust-points-btn.active { 
     background-color: var(--success-color);
     color: var(--light-text-color);
-    border-color: #388E3C; /* Ou une version plus foncée de success-color */
+    border-color: #388E3C; 
     font-weight: bold;
 }
 
-button.contest-btn { /* Utilisé pour le bouton "Contester (0pt)" sur l'écran de validation */
-    background-color: var(--warning-color);
+button.contest-btn { /* Pour le bouton "Contester (0pt)" sur l'écran de validation */
+    background-color: var(--warning-color); 
     color: var(--dark-text-color);
-    text-transform: none;
+    text-transform: none; 
 }
 button.contest-btn:hover {
-    background-color: #FFB300; /* Plus foncé */
+    background-color: #FFB300; 
 }
-/* Note: .undo-contest-btn n'est plus directement utilisé avec la nouvelle logique, mais on le garde au cas où. */
-button.undo-contest-btn { background-color: #78909c; }
+button.undo-contest-btn { background-color: #78909c; } /* Gardé au cas où */
 button.undo-contest-btn:hover { background-color: #546e7a; }
 
 
 /* Statuts pour .validation-item */
-.validation-item .status-guessed_pending_validation { color: var(--secondary-color); font-weight: bold; font-style: italic; } /* Ex: "EN ATTENTE" */
-.validation-item .status-passed { color: #757575; font-weight: bold; } /* Gris pour passé */
-.validation-item .status-contested-accepted { color: var(--danger-color); font-weight: bold; } /* Rouge pour 0pt */
-.validation-item .status-contested-rejected { color: var(--success-color); font-weight: bold; } /* Vert car validé, même si points ajustés */
-.validation-item .status-validated { color: var(--success-color); font-weight: bold; } /* Style générique pour validé */
+.validation-item .status-guessed_pending_validation { color: var(--secondary-color); font-weight: bold; font-style: italic; }
+.validation-item .status-passed { color: #757575; font-weight: bold; }
+.validation-item .status-contested-accepted { color: var(--danger-color); font-weight: bold; }
+.validation-item .status-contested-rejected { color: var(--success-color); font-weight: bold; }
+.validation-item .status-validated { color: var(--success-color); font-weight: bold; }
 .validation-item .status-validated small,
-.validation-item .status-contested-rejected small { /* Pour "(Initial: X pts)" */
+.validation-item .status-contested-rejected small { 
     color: #757575;
     font-weight: normal;
     font-size: 0.85em;
@@ -365,7 +371,7 @@ button.undo-contest-btn:hover { background-color: #546e7a; }
 
 /* Styles pour la Modale des Règles */
 .modal {
-    display: none; /* Cachée par défaut */
+    display: none; 
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -407,17 +413,17 @@ button.undo-contest-btn:hover { background-color: #546e7a; }
     margin-bottom: 10px;
 }
 .modal-content ul, .modal-content ol {
-    padding-left: 20px; /* Indentation standard pour listes */
+    padding-left: 20px; 
     margin-bottom: 15px;
 }
-.modal-content strong { /* Mots importants dans les règles */
+.modal-content strong { 
     color: var(--secondary-color);
     font-weight: 600;
 }
 
 .close-modal-btn {
     color: #aaa;
-    float: right; /* Maintenu pour positionnement rapide */
+    float: right; 
     font-size: 28px;
     font-weight: bold;
     position: absolute;
@@ -452,13 +458,13 @@ button.undo-contest-btn:hover { background-color: #546e7a; }
 }
 
 /* Ajustements pour petits écrans */
-@media (max-width: 600px) { /* Pour la modale principalement */
+@media (max-width: 600px) { 
     .modal-content {
         margin: 10% auto;
         padding: 20px;
     }
     .modal-content h2 {
-        font-size: 1.5em; /* Ajuster la taille du titre des règles */
+        font-size: 1.5em; 
     }
     .close-modal-btn {
         top: 5px;
@@ -467,7 +473,7 @@ button.undo-contest-btn:hover { background-color: #546e7a; }
     }
 }
 
-@media (max-width: 360px) { /* Ajustements généraux pour très petits écrans */
+@media (max-width: 360px) { 
     .game-title { font-size: 2.8em; }
     .screen-title { font-size: 1.7em; }
     .word-card { font-size: 1.8em; padding: 20px 15px; }
@@ -476,7 +482,7 @@ button.undo-contest-btn:hover { background-color: #546e7a; }
     #app { padding: 20px 15px; }
 
     .validation-item .validation-buttons button {
-        font-size: 0.75em; /* Encore plus petit pour les boutons de validation */
+        font-size: 0.75em; 
         padding: 5px 8px;
     }
 }
