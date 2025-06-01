@@ -6,7 +6,15 @@
     "Mouton", "Chèvre", "Papillon", "Abeille", "Fourmi", "Araignée", "Moustique", "Grenouille", "Escargot", "Hérisson",
     "Paon", "Cygne", "Pingouin", "Autruche", "Flamant rose", "Colibri", "Corbeau", "Pigeon", "Moineau", "Chauve-souris",
     "Lézard", "Salamandre", "Crabe", "Crevette", "Homard", "Méduse", "Étoile de mer", "Hippocampe", "Morse", "Phoque",
-    "Loutre", "Castor", "Écureuil", "Marmotte", "Hérisson", "Taupe", "Raton laveur", "Blaireau", "Belette", "Furet"
+    "Loutre", "Castor", "Écureuil", "Marmotte", "Taupe", "Raton laveur", "Blaireau", "Belette", "Furet", "Suricate",
+    "Gorille", "Orang-outan", "Chimpanzé", "Babouin", "Guépard", "Léopard", "Jaguar", "Panthère", "Hyène", "Chacal",
+    "Rhinocéros", "Hippopotame", "Buffle", "Gazelle", "Antilope", "Cerf", "Daim", "Élan", "Orignal", "Sanglier",
+    "Lynx", "Couguar", "Ocelot", "Serval", "Fennec", "Dingo", "Coyote", "Bison", "Yak", "Lama", "Alpaga",
+    "Vautour", "Faucon", "Épervier", "Condor", "Pélican", "Cigogne", "Héron", "Grue", "Albatros", "Manchot",
+    "Canari", "Pinson", "Merle", "Rossignol", "Rougegorge", "Mésange", "Pic-vert", "Coucou", "Hirondelle", "Martinet",
+    "Guêpe", "Bourdon", "Libellule", "Sauterelle", "Grillon", "Criquet", "Mante religieuse", "Scarabée", "Coccinelle", "Luciole",
+    "Chenille", "Ver de terre", "Mille-pattes", "Cloporte", "Scorpion", "Anguille", "Saumon", "Truite", "Thon", "Morue",
+    "Sardine", "Hareng", "Bar", "Sole", "Raie", "Poulpe", "Calmar", "Seiche", "Bernard-l'hermite", "Mouette"
   ],
   "Objets du quotidien": [
     "Table", "Chaise", "Lampe", "Livre", "Stylo", "Crayon", "Ordinateur", "Téléphone", "Clé", "Portefeuille",
@@ -15,7 +23,13 @@
     "Miroir", "Brosse à dents", "Savon", "Serviette", "Rideau", "Tapis", "Vase", "Horloge", "Cadre photo", "Plante",
     "Coussin", "Couverture", "Oreiller", "Réveil", "Calendrier", "Agenda", "Ciseaux", "Règle", "Gomme", "Taille-crayon",
     "Agrafeuse", "Perforatrice", "Classeur", "Enveloppe", "Timbre", "Bouteille", "Tasse", "Bol", "Balai", "Pelle",
-    "Aspirateur", "Fer à repasser", "Sèche-cheveux", "Peigne", "Brosse", "Shampoing", "Dentifrice", "Parapluie", "Valise", "Sac à dos"
+    "Aspirateur", "Fer à repasser", "Sèche-cheveux", "Peigne", "Brosse", "Shampoing", "Dentifrice", "Parapluie", "Valise", "Sac à dos",
+    "Étagère", "Commode", "Bureau (meuble)", "Tabouret", "Marchepied", "Poubelle", "Corbeille", "Cintre", "Portemanteau", "Patère",
+    "Interrupteur", "Prise électrique", "Rallonge", "Ampoule", "Bougie", "Allumette", "Briquet", "Cendrier", "Journal", "Magazine",
+    "Télécommande", "Manette de jeu", "Casque audio", "Écouteurs", "Chargeur", "Pile", "Batterie", "Ouvre-boîte", "Tire-bouchon", "Décapsuleur",
+    "Planche à découper", "Épluche-légumes", "Râpe", "Passoire", "Fouet", "Spatule", "Louche", "Moule à gâteau", "Plateau", "Set de table",
+    "Nappe", "Torchon", "Éponge", "Liquide vaisselle", "Lessive", "Adoucissant", "Étendoir", "Pince à linge", "Corbeille à linge", "Panier",
+    "Boîte", "Coffre", "Tiroir", "Serrure", "Verrou", "Poignée de porte", "Fenêtre", "Volet", "Store", "Moustiquaire"
   ],
   "Métiers": [
     "Médecin", "Infirmier", "Pompier", "Policier", "Enseignant", "Boulanger", "Cuisinier", "Serveur", "Vendeur", "Caissier",
@@ -23,8 +37,13 @@
     "Journaliste", "Écrivain", "Avocat", "Juge", "Menuisier", "Plombier", "Électricien", "Mécanicien", "Coiffeur", "Fleuriste",
     "Jardinier", "Agriculteur", "Vétérinaire", "Bibliothécaire", "Informaticien", "Webdesigner", "Sportif", "Entraîneur", "Facteur", "Secrétaire",
     "Photographe", "Réalisateur", "Pharmacien", "Dentiste", "Psychologue", "Traducteur", "Guide touristique", "Archéologue", "Historien", "Chercheur",
-    "Designer", "Illustrateur", "Maçon", "Charpentier", "Peintre (artiste)", "Peintre (bâtiment)", "Sculpteur", "Musicien", "Comédien", "Magicien",
-    "Clown", "Athlète", "Explorateur", "Garde du corps", "Détective", "Espion", "Notaire", "Huissier", "Banquier", "Comptable"
+    "Designer", "Illustrateur", "Maçon", "Charpentier", "Peintre (artiste)", "Peintre (bâtiment)", "Sculpteur", "Comédien", "Magicien",
+    "Clown", "Athlète", "Explorateur", "Garde du corps", "Détective", "Espion", "Notaire", "Huissier", "Banquier", "Comptable",
+    "Économiste", "Analyste financier", "Courtier", "Assureur", "Agent immobilier", "Promoteur", "Urbaniste", "Géomètre", "Cartographe", "Météorologue",
+    "Océanographe", "Biologiste", "Chimiste", "Physicien", "Mathématicien", "Statisticien", "Professeur d'université", "Directeur d'école", "Conseiller d'orientation", "Éducateur spécialisé",
+    "Assistant social", "Animateur", "Coach de vie", "Consultant", "Manager", "Chef de projet", "Directeur des ressources humaines", "Recruteur", "Formateur", "Commercial",
+    "Marin", "Pêcheur", "Capitaine de navire", "Docker", "Contrôleur aérien", "Hôtesse de l'air", "Steward", "Agent de voyage", "Réceptionniste d'hôtel", "Gouvernante",
+    "Barman", "Sommelier", "Boucher", "Charcutier", "Fromager", "Poissonnier", "Épicier", "Caviste", "Libraire", "Disquaire"
   ],
   "Aliments & Boissons": [
     "Pomme", "Banane", "Orange", "Fraise", "Raisin", "Ananas", "Pastèque", "Citron", "Tomate", "Carotte",
@@ -34,7 +53,15 @@
     "Kiwi", "Mangue", "Pêche", "Abricot", "Cerise", "Framboise", "Myrtille", "Concombre", "Poivron", "Aubergine",
     "Courgette", "Champignon", "Brocoli", "Chou-fleur", "Asperge", "Épinard", "Miel", "Confiture", "Beurre", "Crème",
     "Sucre", "Sel", "Poivre", "Huile", "Vinaigre", "Moutarde", "Ketchup", "Mayonnaise", "Biscuit", "Popcorn",
-    "Céréales", "Croissant", "Baguette", "Sushi", "Taco", "Crêpe", "Sirop", "Smoothie", "Limonade", "Infusion"
+    "Céréales", "Croissant", "Baguette", "Sushi", "Taco", "Crêpe", "Sirop", "Smoothie", "Limonade", "Infusion",
+    "Avocat", "Betterave", "Radis", "Artichaut", "Haricot vert", "Petit pois", "Lentille", "Pois chiche", "Maïs", "Blé",
+    "Avoine", "Seigle", "Noisette", "Amande", "Cacahuète", "Pistache", "Noix de cajou", "Datte", "Figue", "Prune",
+    "Mirabelle", "Quetsche", "Pamplemousse", "Mandarine", "Clémentine", "Kaki", "Litchi", "Goyave", "Fruit de la passion", "Grenade",
+    "Curry", "Gingembre", "Cannelle", "Vanille", "Muscade", "Safran", "Basilic", "Persil", "Ciboulette", "Menthe",
+    "Romarin", "Thym", "Origan", "Laurier", "Tofu", "Seitan", "Quinoa", "Boulgour", "Semoule", "Polenta",
+    "Steak", "Saucisse", "Jambon", "Bacon", "Saumon fumé", "Crevette", "Moules", "Huître", "Caviar", "Foie gras",
+    "Camembert", "Brie", "Roquefort", "Comté", "Emmental", "Mozzarella", "Parmesan", "Chèvre (fromage)", "Reblochon", "Munster",
+    "Champagne", "Cidre", "Whisky", "Rhum", "Vodka", "Gin", "Cocktail", "Milkshake", "Cappuccino", "Espresso"
   ],
   "Lieux & Nature": [
     "Maison", "École", "Parc", "Plage", "Montagne", "Forêt", "Rivière", "Lac", "Océan", "Désert",
@@ -43,7 +70,13 @@
     "Ferme", "Usine", "Bureau", "Stade", "Piscine", "Camping", "Champ", "Prairie", "Colline", "Vallée",
     "Canyon", "Glacier", "Savane", "Jungle", "Marais", "Récif corallien", "Dune", "Archipel", "Péninsule", "Baie",
     "Phare", "Moulin", "Gratte-ciel", "Immeuble", "Cabane", "Tente", "Igloo", "Palais", "Forteresse", "Ruines",
-    "Observatoire", "Laboratoire", "Centrale électrique", "Mine", "Carrière", "Port", "Quai", "Canal", "Tunnel", "Autoroute"
+    "Observatoire", "Laboratoire", "Centrale électrique", "Mine", "Carrière", "Port", "Quai", "Canal", "Tunnel", "Autoroute",
+    "Sentier", "Chemin", "Place (publique)", "Marché", "Théâtre", "Opéra", "Université", "Collège", "Lycée", "Crèche",
+    "Mairie", "Préfecture", "Tribunal", "Prison", "Cimetière", "Banque", "Poste", "Pharmacie", "Boulangerie", "Supermarché",
+    "Cosmos", "Galaxie", "Nébuleuse", "Étoile", "Planète", "Lune", "Soleil", "Comète", "Astéroïde", "Météorite",
+    "Atmosphère", "Nuage", "Orage", "Neige", "Pluie", "Vent", "Arc-en-ciel", "Aurore boréale", "Brouillard", "Brume",
+    "Falaise", "Gouffre", "Plateau", "Delta", "Estuaire", "Fjord", "Geyser", "Source chaude", "Taïga", "Toundra",
+    "Mangrove", "Steppe", "Pampa", "Clairière", "Bosquet", "Verger", "Vignoble", "Rocher", "Caverne", "Souterrain"
   ],
   "Sports & Loisirs": [
     "Football", "Basketball", "Tennis", "Natation", "Vélo", "Course", "Ski", "Surf", "Danse", "Musique",
@@ -52,15 +85,40 @@
     "Plongée", "Voile", "Golf", "Rugby", "Handball", "Volleyball", "Badminton", "Patinage", "Bowling", "Billard",
     "Athlétisme", "Gymnastique", "Judo", "Karaté", "Boxe", "Escrime", "Tir à l'arc", "Équitation", "Pétanque", "Fléchettes",
     "Skateboard", "Roller", "Surf des neiges", "Luge", "Bobsleigh", "Curling", "Hockey sur glace", "Water-polo", "Aviron", "Canoë-kayak",
-    "Bricolage", "Modélisme", "Collection", "Origami", "Sculpture", "Poterie", "Tricot", "Crochet", "Calligraphie", "Jonglerie"
+    "Bricolage", "Modélisme", "Collection", "Origami", "Sculpture", "Poterie", "Tricot", "Crochet", "Calligraphie", "Jonglerie",
+    "Parachutisme", "Deltaplane", "Parapente", "Montgolfière", "Saut à l'élastique", "Planche à voile", "Kitesurf", "Paddle", "Rafting", "Canyoning",
+    "Spéléologie", "Chasse au trésor", "Geocaching", "Jeux de rôle", "Jeux de société", "Karaoké", "Magie (illusionnisme)", "Astronomie (amateur)", "Observation des oiseaux", "Philatélie",
+    "Numismatique", "Généalogie", "Écriture", "Blog", "Podcast", "Streaming (jeux)", "Cosplay", "Escape game", "Paintball", "Laser game",
+    "Fléchettes", "Baby-foot", "Flipper", "Cerf-volant", "Boomerang", "Frisbee", "Slackline", "Parkour", "Street workout", "Crossfit",
+    "Pilates", "Zumba", "Aquagym", "Tai-chi", "Qi gong", "Méditation", "Sophrologie", "Développement personnel", "Bénévolat", "Club de lecture"
   ],
-  "Mixte (pour varier)": [
-    "Amour", "Bonheur", "Tristesse", "Colère", "Peur", "Surprise", "Rêve", "Cauchemar", "Secret", "Aventure",
-    "Vacances", "Fête", "Cadeau", "Argent", "Temps", "Histoire", "Science", "Art", "Magie", "Futur",
-    "Passé", "Présent", "Chance", "Destin", "Liberté", "Paix", "Guerre", "Silence", "Bruit", "Couleur",
-    "Forme", "Taille", "Poids", "Vitesse", "Force", "Faiblesse", "Beauté", "Laideur", "Vérité", "Mensonge",
-    "Idée", "Pensée", "Solution", "Problème", "Question", "Réponse", "Début", "Fin", "Milieu", "Sommet",
-    "Base", "Centre", "Extrême", "Limite", "Espace", "Vide", "Plein", "Ombre", "Lumière", "Énergie",
-    "Esprit", "Âme", "Corps", "Santé", "Maladie", "Guérison", "Naissance", "Mort", "Vie", "Univers"
+  "Pokémon (1ère Génération)": [
+    "Bulbizarre", "Herbizarre", "Florizarre", "Salamèche", "Reptincel", "Dracaufeu", "Carapuce", "Carabaffe", "Tortank",
+    "Chenipan", "Chrysacier", "Papilusion", "Aspicot", "Coconfort", "Dardargnan", "Roucool", "Roucoups", "Roucarnage",
+    "Rattata", "Rattatac", "Piafabec", "Rapasdepic", "Abo", "Arbok", "Pikachu", "Raichu", "Sabelette", "Sablaireau",
+    "Nidoran♀", "Nidorina", "Nidoqueen", "Nidoran♂", "Nidorino", "Nidoking", "Mélofée", "Mélodelfe", "Goupix", "Feunard",
+    "Rondoudou", "Grodoudou", "Nosferapti", "Nosferalto", "Mystherbe", "Ortide", "Rafflesia", "Paras", "Parasect",
+    "Mimitoss", "Aéromite", "Taupiqueur", "Triopikeur", "Miaouss", "Persian", "Psykokwak", "Akwakwak", "Férosinge"
+  ],
+ "Séries TV (Années 2000)": [
+    "Lost", "Les Soprano", "Sur écoute (The Wire)", "Six Feet Under", "24 heures chrono", "Friends (fin)", "Alias", "Scrubs",
+    "Dr House", "Grey's Anatomy", "Desperate Housewives", "Prison Break", "Heroes", "Dexter", "Battlestar Galactica (reboot)",
+    "Veronica Mars", "The Office (US)", "Malcolm", "Gilmore Girls", "Newport Beach (The O.C.)", "Les Frères Scott (One Tree Hill)",
+    "Smallville", "Charmed (fin)", "Buffy contre les vampires (fin)", "Angel (fin)", "Stargate SG-1 (partie)", "Stargate Atlantis",
+    "NCIS", "Les Experts (CSI)", "Monk", "Psych : Enquêteur malgré lui", "How I Met Your Mother (début)", "Supernatural (début)",
+    "Doctor Who (reboot)", "Friday Night Lights", "Mad Men (début)", "Breaking Bad (début)", "Kaamelott", "Caméra Café",
+    "Un gars, une fille (France)", "Plus belle la vie (début)", "Deadwood", "Rome", "Arrested Development", "Flight of the Conchords",
+    "Entourage", "Nip/Tuck", "The Shield", "Queer as Folk (US)", "Gilmore Girls", "Boston Justice", "Urgences (fin)"
+  ],
+  "Séries TV (Années 2010)": [
+    "Game of Thrones", "Breaking Bad (fin)", "The Walking Dead", "Sherlock", "Downton Abbey", "Homeland", "Mad Men (fin)",
+    "Parks and Recreation", "Community", "Modern Family", "The Big Bang Theory (partie)", "How I Met YourMother (fin)",
+    "Dexter (fin)", "True Detective (saison 1)", "Fargo (saison 1)", "House of Cards", "Orange Is the New Black", "Black Mirror",
+    "Peaky Blinders", "Vikings", "Stranger Things (début)", "The Crown (début)", "Westworld (début)", "Mr. Robot",
+    "Narcos", "Better Call Saul (début)", "The Americans", "Hannibal", "Orphan Black", "Brooklyn Nine-Nine",
+    "Veep", "Silicon Valley", "Louie", "Girls", "Broadchurch", "The Killing (US)", "Person of Interest",
+    "Suits", "Scandal", "Revenge", "Once Upon a Time", "American Horror Story", "True Blood (fin)", "Sons of Anarchy (fin)",
+    "Boardwalk Empire", "Justified", "Luther", "Dix pour cent", "Le Bureau des Légendes", "Engrenages (partie)",
+    "Baron Noir (début)", "The Handmaid's Tale (début)", "This Is Us (début)", "Atlanta (début)", "Fleabag (début)"
   ]
 }

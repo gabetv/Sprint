@@ -28,7 +28,6 @@ const guessNormalBtn = document.getElementById('guessNormalBtn');
 const guess3WordsBtn = document.getElementById('guess3WordsBtn');
 const guessMimeBtn = document.getElementById('guessMimeBtn');
 const passWordBtnGame = document.getElementById('passWordBtnGame');
-// const currentTurnScoreDiv = document.getElementById('currentTurnScore'); // Masqué
 
 const turnEndMessageH2 = document.getElementById('turnEndMessage');
 const teamNameTurnEnd = document.getElementById('teamNameTurnEnd');
@@ -46,16 +45,18 @@ const finalTeam2ScoreP = document.getElementById('finalTeam2Score');
 const winnerMessageH3 = document.getElementById('winnerMessage');
 const newGameBtn = document.getElementById('newGameBtn');
 
+const showRulesBtn = document.getElementById('showRulesBtn');
+const rulesModal = document.getElementById('rulesModal');
+const closeRulesModalBtn = document.getElementById('closeRulesModalBtn');
+
 // --- SONS ---
-const soundWordGuessed = new Audio('sounds/validation_ok.mp3'); // Joué quand le joueur actif trouve un mot
+const soundWordGuessed = new Audio('sounds/validation_ok.mp3');
 const soundPassWord = new Audio('sounds/pass_word.mp3');
 const soundGameOver = new Audio('sounds/game_over.mp3');
-// Optionnel: un son distinct pour la confirmation finale du tour par l'équipe adverse
-// const soundTurnConfirmedByOpponent = new Audio('sounds/turn_validated.mp3'); 
 
 function playSound(audioElement) {
     if (audioElement) {
-        audioElement.currentTime = 0; 
+        audioElement.currentTime = 0;
         audioElement.play().catch(error => {
             console.error("Erreur de lecture audio:", error);
         });
@@ -67,7 +68,11 @@ let gameState = {
     teams: [ { name: "Alpha", score: 0 }, { name: "Bravo", score: 0 } ],
     currentTeamIndex: 0, currentRound: 1, roundsToPlay: 1, timePerTurn: 60,
     currentWord: "", currentTurnScore: 0, timerInterval: null, timeLeft: 0,
-    currentThemeWords: [], allWordsByTheme: {}, usedWordsInGame: [], currentTurnActions: [],
+    currentThemeWords: [], allWordsByTheme: {},
+    usedWordsInGame: [],
+    themesResetInCurrentGame: [],
+    actionButtonLock: false,
+    currentTurnActions: [], // S'assurer qu'il est bien initialisé ici ou dans setupNewGame
 };
 const USED_WORDS_STORAGE_KEY_PREFIX = 'sprint_usedWords_';
 
@@ -126,10 +131,14 @@ function setupNewGame() {
         alert("Veuillez choisir un thème valide !"); return false;
     }
     gameState.currentThemeWords = [...gameState.allWordsByTheme[selectedTheme]];
-    gameState.usedWordsInGame = []; gameState.teams[0].score = 0; gameState.teams[1].score = 0;
+    gameState.usedWordsInGame = [];
+    gameState.themesResetInCurrentGame = [];
+    gameState.teams[0].score = 0; gameState.teams[1].score = 0;
     gameState.currentTeamIndex = 0; gameState.currentRound = 1;
     gameState.roundsToPlay = parseInt(roundsToPlayInput.value) || 1;
     gameState.timePerTurn = parseInt(timePerTurnInput.value) || 60;
+    gameState.actionButtonLock = false;
+    gameState.currentTurnActions = []; // Important de réinitialiser ici
     updateGlobalScoreDisplays(); console.log("Jeu configuré:", selectedTheme, gameState);
     return true;
 }
@@ -142,8 +151,11 @@ function prepareTeamTurn() {
     showScreen('ready');
 }
 function startPlayerTurn() {
-    gameState.currentTurnActions = []; gameState.currentTurnScore = 0;
-    gameState.timeLeft = gameState.timePerTurn; displayTime(); selectNewWord();
+    gameState.currentTurnActions = []; // Assurer la réinitialisation ici aussi
+    gameState.currentTurnScore = 0;
+    gameState.timeLeft = gameState.timePerTurn; displayTime();
+    gameState.actionButtonLock = false;
+    selectNewWord();
     showScreen('game'); clearInterval(gameState.timerInterval);
     gameState.timerInterval = setInterval(() => {
         gameState.timeLeft--; displayTime();
@@ -155,47 +167,103 @@ function displayTime() {
     const seconds = gameState.timeLeft % 60;
     timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 }
+
 function selectNewWord() {
     const selectedTheme = themeSelect.value;
     const globallyUsed = getUsedWordsForTheme(selectedTheme);
-    let available = gameState.currentThemeWords.filter(w => !globallyUsed.includes(w) && !gameState.usedWordsInGame.includes(w));
+    
+    let available = gameState.currentThemeWords.filter(w => 
+        !gameState.usedWordsInGame.includes(w) && 
+        !globallyUsed.includes(w)
+    );
+
     if (available.length === 0) {
         available = gameState.currentThemeWords.filter(w => !gameState.usedWordsInGame.includes(w));
-        if (available.length === 0) {
-            wordToGuessDiv.textContent = "FIN DES MOTS !"; gameState.currentWord = "";
-            [guessNormalBtn, guess3WordsBtn, guessMimeBtn, passWordBtnGame].forEach(btn => btn.disabled = true);
-            alert(`Tous les mots du thème "${selectedTheme}" joués!`); return;
-        }
-        alert(`Attention, mots du thème "${selectedTheme}" vont se répéter (vus en parties précédentes).`);
     }
-    [guessNormalBtn, guess3WordsBtn, guessMimeBtn, passWordBtnGame].forEach(btn => btn.disabled = false);
+
+    if (available.length === 0 && gameState.currentThemeWords.length > 0) {
+        if (!gameState.themesResetInCurrentGame.includes(selectedTheme)) {
+            alert(`Tous les mots du thème "${selectedTheme}" ont été joués pendant cette partie ! Les mots vont maintenant se répéter pour ce thème.`);
+            gameState.themesResetInCurrentGame.push(selectedTheme);
+        }
+        gameState.usedWordsInGame = [];
+        available = [...gameState.currentThemeWords];
+        console.warn(`Réinitialisation des mots pour le thème "${selectedTheme}" pour la partie en cours.`);
+    }
+
+    if (available.length === 0) {
+        wordToGuessDiv.textContent = "FIN DES MOTS !";
+        gameState.currentWord = "";
+        [guessNormalBtn, guess3WordsBtn, guessMimeBtn, passWordBtnGame].forEach(btn => btn.disabled = true);
+        if (gameState.currentThemeWords.length > 0) {
+            console.warn(`Tous les mots du thème "${selectedTheme}" sont épuisés.`);
+        } else {
+            console.error(`Le thème "${selectedTheme}" est vide.`);
+        }
+        return;
+    }
+
+    if (!gameState.actionButtonLock) {
+        [guessNormalBtn, guess3WordsBtn, guessMimeBtn, passWordBtnGame].forEach(btn => btn.disabled = false);
+    }
+
     const randIdx = Math.floor(Math.random() * available.length);
     gameState.currentWord = available[randIdx];
-    gameState.usedWordsInGame.push(gameState.currentWord);
+    gameState.usedWordsInGame.push(gameState.currentWord); 
+
     wordToGuessDiv.textContent = gameState.currentWord;
     console.log("Mot:", gameState.currentWord, `(Thème: ${selectedTheme})`);
 }
+
 function handleWordAttempt(points, methodName) {
-    if (gameState.timeLeft > 0 && gameState.currentWord !== "") {
-        playSound(soundWordGuessed); // SON JOUÉ LORSQUE LE JOUEUR CLIQUE SUR UN BOUTON DE POINTS
+    if (gameState.actionButtonLock) return;
+
+    if (gameState.timeLeft > 0 && gameState.currentWord !== "" && gameState.currentWord !== "FIN DES MOTS !") {
+        gameState.actionButtonLock = true;
+        [guessNormalBtn, guess3WordsBtn, guessMimeBtn, passWordBtnGame].forEach(btn => btn.disabled = true);
+
+        playSound(soundWordGuessed);
         gameState.currentTurnActions.push({
             word: gameState.currentWord, method: methodName, points: points, status: "guessed_pending_validation"
         });
         gameState.currentTurnScore += points;
-        console.log(`Mot "${gameState.currentWord}" déclaré (${methodName}, ${points} pts). Score tour (non affiché): ${gameState.currentTurnScore}`);
+        console.log(`Mot "${gameState.currentWord}" déclaré (${methodName}, ${points} pts).`);
+        
         selectNewWord();
+
+        setTimeout(() => {
+            gameState.actionButtonLock = false;
+            if (gameState.currentWord !== "" && gameState.currentWord !== "FIN DES MOTS !") {
+                 [guessNormalBtn, guess3WordsBtn, guessMimeBtn, passWordBtnGame].forEach(btn => btn.disabled = false);
+            }
+        }, 1000);
     }
 }
+
 function handlePassWordGame() {
-    if (gameState.timeLeft > 0 && gameState.currentWord !== "") {
+    if (gameState.actionButtonLock) return;
+
+    if (gameState.timeLeft > 0 && gameState.currentWord !== "" && gameState.currentWord !== "FIN DES MOTS !") {
+        gameState.actionButtonLock = true;
+        [guessNormalBtn, guess3WordsBtn, guessMimeBtn, passWordBtnGame].forEach(btn => btn.disabled = true);
+
         playSound(soundPassWord);
         gameState.currentTurnActions.push({
             word: gameState.currentWord, method: "Passé", points: 0, status: "passed"
         });
         console.log("Mot passé:", gameState.currentWord);
+        
         selectNewWord();
+
+        setTimeout(() => {
+            gameState.actionButtonLock = false;
+            if (gameState.currentWord !== "" && gameState.currentWord !== "FIN DES MOTS !") {
+                [guessNormalBtn, guess3WordsBtn, guessMimeBtn, passWordBtnGame].forEach(btn => btn.disabled = false);
+            }
+        }, 1000);
     }
 }
+
 function endTeamTurn() {
     clearInterval(gameState.timerInterval);
     const teamWhoPlayed = gameState.teams[gameState.currentTeamIndex];
@@ -203,8 +271,11 @@ function endTeamTurn() {
     turnEndMessageH2.textContent = `Temps écoulé pour l'équipe ${teamWhoPlayed.name} !`;
     turnScoreSummaryP.textContent = `Score déclaré : ${gameState.currentTurnScore} points.`;
     showScreen('turnEnd');
+    [guessNormalBtn, guess3WordsBtn, guessMimeBtn, passWordBtnGame].forEach(btn => btn.disabled = true);
+    gameState.actionButtonLock = false;
     setTimeout(setupAndShowValidationScreen, 2000);
 }
+
 function setupAndShowValidationScreen() {
     const teamPlayingIdx = gameState.currentTeamIndex;
     const opponentTeamIdx = (teamPlayingIdx + 1) % 2;
@@ -213,65 +284,119 @@ function setupAndShowValidationScreen() {
     validatingTeamNameSpan.textContent = teamPlaying.name;
     opponentTeamNameValidatorSpan.textContent = opponentTeam.name;
     validationListDiv.innerHTML = '';
+
     gameState.currentTurnActions.forEach((action, index) => {
-        const item = document.createElement('div'); item.className = 'validation-item';
-        let statusTxt = '', btnsHtml = '';
-        const statusCls = `status-${action.status.replace(/_/g, '-')}`;
-        if (action.status === "guessed_pending_validation") {
-            statusTxt = `<span class="${statusCls}">DÉCLARÉ TROUVÉ</span>`;
-            btnsHtml = `<button class="contest-btn" data-action-index="${index}">Contester (${action.points} pts)</button>`;
-        } else if (action.status === "passed") {
-            statusTxt = `<span class="${statusCls}">PASSÉ</span>`;
-        } else if (action.status === "contested_rejected") {
-            statusTxt = `<span class="${statusCls}">CONTESTATION ANNULÉE</span>`;
-            btnsHtml = `<button class="contest-btn" data-action-index="${index}">Re-Contester (${action.points} pts)</button>`;
-        } else if (action.status === "contested_accepted") {
-            statusTxt = `<span class="${statusCls}">CONTESTÉ (0 pt)</span>`;
-            btnsHtml = `<button class="undo-contest-btn" data-action-index="${index}">Annuler Contestation (${action.points} pts)</button>`;
+        if (typeof action.adjustedPoints === 'undefined') {
+            if (action.status === "passed") {
+                action.adjustedPoints = 0;
+            } else {
+                action.adjustedPoints = action.points;
+            }
         }
-        item.innerHTML = `<p>Mot:<strong>${action.word}</strong></p><p>Méthode:${action.method}(${action.points}pt${action.points>1?'s':''})</p><p>Statut:${statusTxt}</p><div class="validation-buttons">${btnsHtml}</div>`;
+
+        const item = document.createElement('div');
+        item.className = 'validation-item';
+        let statusTxt = '', pointsAdjustmentHtml = '';
+        const statusBaseClass = 'status-';
+
+        if (action.status === "passed") {
+            statusTxt = `<span class="${statusBaseClass}passed">PASSÉ</span>`;
+            action.adjustedPoints = 0;
+        } else if (action.status === "contested_accepted") {
+            statusTxt = `<span class="${statusBaseClass}contested-accepted">CONTESTÉ (0 pt)</span>`;
+            action.adjustedPoints = 0; // S'assurer que c'est 0
+             pointsAdjustmentHtml = `
+                <button class="adjust-points-btn" data-action-index="${index}" data-new-points="1" title="Valider comme Normal (1pt)">1pt</button>
+                <button class="adjust-points-btn" data-action-index="${index}" data-new-points="3" title="Valider comme 3 Mots (3pts)">3pts</button>
+                <button class="adjust-points-btn" data-action-index="${index}" data-new-points="5" title="Valider comme Mime (5pts)">5pts</button>
+                <small>(Initialement: ${action.points} pts)</small>
+            `;
+        } else { // "guessed_pending_validation" ou "contested_rejected" (après ajustement non-nul)
+            statusTxt = `<span class="${statusBaseClass}validated">VALIDÉ (${action.adjustedPoints} pt${action.adjustedPoints !== 1 ? 's' : ''})</span>`;
+            if (action.adjustedPoints !== action.points) {
+                 statusTxt += ` <small>(Initial: ${action.points} pts)</small>`;
+            }
+            pointsAdjustmentHtml = `
+                <button class="adjust-points-btn ${action.adjustedPoints === 1 ? 'active' : ''}" data-action-index="${index}" data-new-points="1">Normal (1pt)</button>
+                <button class="adjust-points-btn ${action.adjustedPoints === 3 ? 'active' : ''}" data-action-index="${index}" data-new-points="3">3 Mots (3pts)</button>
+                <button class="adjust-points-btn ${action.adjustedPoints === 5 ? 'active' : ''}" data-action-index="${index}" data-new-points="5">Mime (5pts)</button>
+                <button class="contest-btn" data-action-index="${index}" data-new-points="0" title="Contester (0pt)">Contester (0pt)</button>
+            `;
+        }
+
+        item.innerHTML = `
+            <p>Mot: <strong>${action.word}</strong> (Déclaré: ${action.method} - ${action.points} pt${action.points !== 1 ? 's':''})</p>
+            <p>Statut actuel: ${statusTxt}</p>
+            <div class="validation-buttons">${pointsAdjustmentHtml}</div>
+        `;
         validationListDiv.appendChild(item);
     });
-    validationListDiv.querySelectorAll('.contest-btn, .undo-contest-btn').forEach(btn => {
-        const newBtn = btn.cloneNode(true); btn.parentNode.replaceChild(newBtn, btn);
+
+    validationListDiv.querySelectorAll('.adjust-points-btn, .contest-btn').forEach(btn => {
+        const newBtn = btn.cloneNode(true);
+        btn.parentNode.replaceChild(newBtn, btn);
         newBtn.addEventListener('click', (e) => {
             const idx = parseInt(e.target.dataset.actionIndex);
-            const isContesting = e.target.classList.contains('contest-btn');
-            handleContestAction(idx, isContesting);
+            const newPts = parseInt(e.target.dataset.newPoints);
+            handlePointsAdjustment(idx, newPts);
         });
     });
+
     initialTurnScoreValidatorSpan.textContent = gameState.currentTurnScore;
-    updateAdjustedScoreValidator(); showScreen('validation');
+    updateAdjustedScoreValidator();
+    showScreen('validation');
 }
-function handleContestAction(actionIndex, isContesting) {
+
+function handlePointsAdjustment(actionIndex, newPoints) {
     const action = gameState.currentTurnActions[actionIndex];
     if (!action || action.status === "passed") return;
-    action.status = isContesting ? "contested_accepted" : "contested_rejected";
-    setupAndShowValidationScreen();
+
+    action.adjustedPoints = newPoints;
+
+    if (newPoints === 0) {
+        action.status = "contested_accepted";
+    } else {
+        action.status = "contested_rejected"; // Signifie validé, mais potentiellement avec des points différents de l'initial.
+                                              // "guessed_pending_validation" est l'état avant tout arbitrage.
+    }
+    
+    setupAndShowValidationScreen(); 
 }
+
 function updateAdjustedScoreValidator() {
-    let adjusted = 0;
+    let adjustedTotalScore = 0;
     gameState.currentTurnActions.forEach(act => {
-        if (act.status === "guessed_pending_validation" || act.status === "contested_rejected") { adjusted += act.points; }
-    });
-    adjustedTurnScoreValidatorSpan.textContent = adjusted; return adjusted;
-}
-confirmValidationBtn.addEventListener('click', () => {
-    const teamIdx = gameState.currentTeamIndex; let finalPts = 0;
-    gameState.currentTurnActions.forEach(act => {
-        if (act.status === "guessed_pending_validation" || act.status === "contested_rejected") {
-            finalPts += act.points; addWordToUsedForTheme(themeSelect.value, act.word);
+        if (typeof act.adjustedPoints !== 'undefined') {
+             adjustedTotalScore += act.adjustedPoints;
+        } else if (act.status !== "passed") {
+            adjustedTotalScore += act.points; // Fallback
         }
     });
-    gameState.teams[teamIdx].score += finalPts;
-    // playSound(soundTurnConfirmedByOpponent); // Si vous voulez un son distinct pour cette action
-    console.log(`Tour validé. Score tour:${finalPts}. Score total ${gameState.teams[teamIdx].name}:${gameState.teams[teamIdx].score}`);
-    updateGlobalScoreDisplays(); advanceToNextPlayerOrRound();
+    adjustedTurnScoreValidatorSpan.textContent = adjustedTotalScore;
+    return adjustedTotalScore;
+}
+
+confirmValidationBtn.addEventListener('click', () => {
+    const teamIdx = gameState.currentTeamIndex;
+    let finalPtsForTurn = 0;
+    gameState.currentTurnActions.forEach(act => {
+        if (typeof act.adjustedPoints !== 'undefined' && act.adjustedPoints > 0) {
+            finalPtsForTurn += act.adjustedPoints;
+            addWordToUsedForTheme(themeSelect.value, act.word);
+        }
+        // Les mots passés ou contestés (adjustedPoints = 0) ne rapportent pas de points et ne sont pas ajoutés à usedWordsForTheme.
+    });
+    gameState.teams[teamIdx].score += finalPtsForTurn;
+    console.log(`Tour validé. Score final tour:${finalPtsForTurn}. Score total ${gameState.teams[teamIdx].name}:${gameState.teams[teamIdx].score}`);
+    updateGlobalScoreDisplays();
+    advanceToNextPlayerOrRound();
 });
+
 function updateGlobalScoreDisplays() {
     finalTeam1ScoreP.textContent = `${gameState.teams[0].name} : ${gameState.teams[0].score}`;
     finalTeam2ScoreP.textContent = `${gameState.teams[1].name} : ${gameState.teams[1].score}`;
 }
+
 function advanceToNextPlayerOrRound() {
     gameState.currentTeamIndex = (gameState.currentTeamIndex + 1) % 2;
     if (gameState.currentTeamIndex === 0) {
@@ -282,6 +407,7 @@ function advanceToNextPlayerOrRound() {
         console.log("Manches atteintes. Fin partie."); endGame();
     } else { prepareTeamTurn(); }
 }
+
 function endGame() {
     updateGlobalScoreDisplays(); let winner = "";
     if (gameState.teams[0].score > gameState.teams[1].score) { winner = `L'équipe ${gameState.teams[0].name} gagne! 🎉`; }
@@ -294,13 +420,32 @@ function endGame() {
 // --- ÉCOUTEURS D'ÉVÉNEMENTS ---
 startGameBtn.addEventListener('click', () => { if (setupNewGame()) { prepareTeamTurn(); }});
 teamReadyBtn.addEventListener('click', startPlayerTurn);
+
 guessNormalBtn.addEventListener('click', () => handleWordAttempt(parseInt(guessNormalBtn.dataset.points), "Normal"));
 guess3WordsBtn.addEventListener('click', () => handleWordAttempt(parseInt(guess3WordsBtn.dataset.points), "3 Mots Max"));
 guessMimeBtn.addEventListener('click', () => handleWordAttempt(parseInt(guessMimeBtn.dataset.points), "En Mimant"));
 passWordBtnGame.addEventListener('click', handlePassWordGame);
+
 newGameBtn.addEventListener('click', () => { showScreen('config'); });
+
 // --- INITIALISATION ---
 document.addEventListener('DOMContentLoaded', () => {
-    loadWordsAndSetupThemes(); showScreen('config');
-    screens.validation.classList.add('hidden');
+    loadWordsAndSetupThemes();
+    showScreen('config');
+
+    if (showRulesBtn && rulesModal && closeRulesModalBtn) {
+        showRulesBtn.addEventListener('click', () => {
+            rulesModal.style.display = 'block';
+        });
+        closeRulesModalBtn.addEventListener('click', () => {
+            rulesModal.style.display = 'none';
+        });
+        window.addEventListener('click', (event) => {
+            if (event.target === rulesModal) {
+                rulesModal.style.display = 'none';
+            }
+        });
+    } else {
+        console.error("Éléments de la modale des règles non trouvés.");
+    }
 });

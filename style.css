@@ -151,12 +151,23 @@ button:active {
     background-color: #e64a19;
 }
 
-.action-button {
+.action-button { /* Ex: "Prêts à Sprinter !" */
     background-color: var(--success-color);
 }
 .action-button:hover {
     background-color: #388e3c;
 }
+
+.secondary-button { /* Ex: Bouton "Règles du Jeu" */
+    background-color: #78909c; /* Gris bleu */
+    font-size: 0.9em;
+    padding: 10px 20px;
+    margin-top: 10px;
+}
+.secondary-button:hover {
+    background-color: #546e7a;
+}
+
 
 /* Écran de Jeu */
 .timer {
@@ -194,26 +205,24 @@ button:active {
     font-weight: 600;
 }
 
-/* MODIFIÉ: Styles pour .actions-grid (était .actions-list avant) */
 .actions-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Deux colonnes égales */
-    gap: 12px; /* Espace entre les boutons */
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
     width: 100%;
-    max-width: 320px; /* Ajuster au besoin */
-    margin: 15px auto 20px auto; /* Centrer la grille */
+    max-width: 320px;
+    margin: 15px auto 20px auto;
 }
 
 .actions-grid .choice-button {
     width: 100%;
     padding: 12px 8px;
-    font-size: 0.9em; /* Ajuster si le texte est trop grand */
+    font-size: 0.9em;
     margin-top: 0;
     border-radius: var(--border-radius-sm);
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
-/* Les styles spécifiques pour .choice-button.normal, .three-words, .mime, .pass restent valides */
 .choice-button.normal { background-color: var(--success-color); }
 .choice-button.normal:hover { background-color: #388e3c; }
 .choice-button.three-words { background-image: linear-gradient(to right, var(--secondary-color), #4facfe); }
@@ -222,9 +231,6 @@ button:active {
 .choice-button.mime:hover { background-image: linear-gradient(to right, #a864f7, var(--primary-color)); }
 .choice-button.pass { background-color: var(--warning-color); color: var(--dark-text-color); }
 .choice-button.pass:hover { background-color: #ffb300; }
-/* Le bouton PASSER prendra une cellule comme les autres dans une grille 2x2.
-   Si vous voulez qu'il prenne toute la largeur en bas d'une grille 2x2, il faudrait une 3ème ligne
-   ou une autre approche de layout. Pour l'instant, il sera à côté de "En Mimant". */
 
 
 /* Cartes d'information */
@@ -293,24 +299,60 @@ button:active {
 .validation-item p strong {
     color: var(--dark-text-color);
 }
-.validation-item .status-guessed_pending_validation { color: var(--success-color); font-weight: bold; }
-.validation-item .status-passed { color: var(--warning-color); font-weight: bold; color: var(--dark-text-color); }
-.validation-item .status-contested_accepted { color: var(--danger-color); font-weight: bold; }
-.validation-item .status-contested_rejected { color: var(--secondary-color); font-weight: bold; }
 
+/* Styles pour les boutons dans .validation-item */
 .validation-item .validation-buttons button {
     font-size: 0.8em;
-    padding: 6px 12px;
+    padding: 6px 10px;
     width: auto;
     margin-top: 8px;
-    margin-right: 8px;
-    text-transform: uppercase;
+    margin-right: 6px;
     letter-spacing: 0.5px;
+    border: 1px solid transparent; /* Base pour l'état actif */
 }
-button.contest-btn { background-color: var(--danger-color); }
-button.contest-btn:hover { background-color: #d32f2f; }
+
+button.adjust-points-btn {
+    background-color: #B0BEC5; /* Gris clair */
+    color: var(--dark-text-color);
+    text-transform: none; /* Pour que "Normal (1pt)" etc. soit plus lisible */
+}
+button.adjust-points-btn:hover {
+    background-color: #90A4AE;
+}
+button.adjust-points-btn.active { /* Style pour le bouton de points actuellement sélectionné */
+    background-color: var(--success-color);
+    color: var(--light-text-color);
+    border-color: #388E3C; /* Ou une version plus foncée de success-color */
+    font-weight: bold;
+}
+
+button.contest-btn { /* Utilisé pour le bouton "Contester (0pt)" sur l'écran de validation */
+    background-color: var(--warning-color);
+    color: var(--dark-text-color);
+    text-transform: none;
+}
+button.contest-btn:hover {
+    background-color: #FFB300; /* Plus foncé */
+}
+/* Note: .undo-contest-btn n'est plus directement utilisé avec la nouvelle logique, mais on le garde au cas où. */
 button.undo-contest-btn { background-color: #78909c; }
 button.undo-contest-btn:hover { background-color: #546e7a; }
+
+
+/* Statuts pour .validation-item */
+.validation-item .status-guessed_pending_validation { color: var(--secondary-color); font-weight: bold; font-style: italic; } /* Ex: "EN ATTENTE" */
+.validation-item .status-passed { color: #757575; font-weight: bold; } /* Gris pour passé */
+.validation-item .status-contested-accepted { color: var(--danger-color); font-weight: bold; } /* Rouge pour 0pt */
+.validation-item .status-contested-rejected { color: var(--success-color); font-weight: bold; } /* Vert car validé, même si points ajustés */
+.validation-item .status-validated { color: var(--success-color); font-weight: bold; } /* Style générique pour validé */
+.validation-item .status-validated small,
+.validation-item .status-contested-rejected small { /* Pour "(Initial: X pts)" */
+    color: #757575;
+    font-weight: normal;
+    font-size: 0.85em;
+    margin-left: 5px;
+}
+
 
 .score-validation-summary p {
     font-size: 1.1em;
@@ -319,6 +361,76 @@ button.undo-contest-btn:hover { background-color: #546e7a; }
 }
 #initialTurnScoreValidator { color: var(--dark-text-color); opacity: 0.7; }
 #adjustedTurnScoreValidator { color: var(--primary-color); font-size: 1.2em; }
+
+
+/* Styles pour la Modale des Règles */
+.modal {
+    display: none; /* Cachée par défaut */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+    padding-top: 50px;
+    box-sizing: border-box;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 25px 30px;
+    border: 1px solid #888;
+    width: 90%;
+    max-width: 500px;
+    border-radius: var(--border-radius-md);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    position: relative;
+    text-align: left;
+}
+
+.modal-content h2 {
+    font-family: 'Luckiest Guy', cursive;
+    color: var(--primary-color);
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.modal-content p,
+.modal-content li {
+    font-size: 0.95em;
+    line-height: 1.6;
+    color: var(--dark-text-color);
+    margin-bottom: 10px;
+}
+.modal-content ul, .modal-content ol {
+    padding-left: 20px; /* Indentation standard pour listes */
+    margin-bottom: 15px;
+}
+.modal-content strong { /* Mots importants dans les règles */
+    color: var(--secondary-color);
+    font-weight: 600;
+}
+
+.close-modal-btn {
+    color: #aaa;
+    float: right; /* Maintenu pour positionnement rapide */
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+.close-modal-btn:hover,
+.close-modal-btn:focus {
+    color: var(--danger-color);
+    text-decoration: none;
+    cursor: pointer;
+}
 
 /* Écran de Fin de Partie */
 .final-scores p {
@@ -340,11 +452,31 @@ button.undo-contest-btn:hover { background-color: #546e7a; }
 }
 
 /* Ajustements pour petits écrans */
-@media (max-width: 360px) {
+@media (max-width: 600px) { /* Pour la modale principalement */
+    .modal-content {
+        margin: 10% auto;
+        padding: 20px;
+    }
+    .modal-content h2 {
+        font-size: 1.5em; /* Ajuster la taille du titre des règles */
+    }
+    .close-modal-btn {
+        top: 5px;
+        right: 15px;
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 360px) { /* Ajustements généraux pour très petits écrans */
     .game-title { font-size: 2.8em; }
     .screen-title { font-size: 1.7em; }
     .word-card { font-size: 1.8em; padding: 20px 15px; }
     button { padding: 10px 15px; font-size: 1em; }
-    .actions-grid .choice-button { font-size: 0.85em; } /* Ajuster pour la grille */
+    .actions-grid .choice-button { font-size: 0.85em; }
     #app { padding: 20px 15px; }
+
+    .validation-item .validation-buttons button {
+        font-size: 0.75em; /* Encore plus petit pour les boutons de validation */
+        padding: 5px 8px;
+    }
 }
